@@ -1,0 +1,65 @@
+.school-work-experiance-testimonial4 {
+  padding-top: var(--dl-space-space-threeunits);
+  padding-bottom: var(--dl-space-space-threeunits);
+}
+.school-work-experiance-max-width {
+  gap: var(--dl-space-space-twounits);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.school-work-experiance-container {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+}
+.school-work-experiance-avatar {
+  gap: var(--dl-space-space-oneandhalfunits);
+  display: flex;
+  align-items: center;
+  margin-right: var(--dl-space-space-twounits);
+}
+.school-work-experiance-avatar-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.school-work-experiance-avatar-image {
+  width: 56px;
+  height: 56px;
+}
+.school-work-experiance-text {
+  text-align: left;
+}
+.school-work-experiance-container1 {
+  flex: 0 0 auto;
+  width: 60vw;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.school-work-experiance-title {
+  width: auto;
+  font-size: 25px;
+  font-style: normal;
+  text-align: left;
+  font-weight: 700;
+  margin-bottom: var(--dl-space-space-unit);
+}
+.school-work-experiance-text1 {
+  width: auto;
+  text-align: left;
+}
+@media(max-width: 479px) {
+  .school-work-experiance-avatar {
+    flex-direction: column;
+  }
+  .school-work-experiance-avatar-content {
+    align-items: center;
+    justify-content: center;
+  }
+}
