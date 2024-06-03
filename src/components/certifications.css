@@ -1,15 +1,15 @@
-.school-work-experiance-testimonial4 {
-  padding-top: var(--dl-space-space-threeunits);
-  padding-bottom: var(--dl-space-space-threeunits);
+.certifications-testimonial4 {
+  padding-top: var(--dl-space-space-unit);
+  padding-bottom: var(--dl-space-space-unit);
 }
-.school-work-experiance-max-width {
+.certifications-max-width {
   gap: var(--dl-space-space-twounits);
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
 }
-.school-work-experiance-container {
+.certifications-container {
   flex: 0 0 auto;
   width: auto;
   display: flex;
@@ -17,39 +17,39 @@
   align-items: center;
   justify-content: center;
 }
-.school-work-experiance-avatar {
+.certifications-avatar {
   gap: var(--dl-space-space-oneandhalfunits);
   width: 113px;
   display: flex;
   align-items: center;
   margin-right: var(--dl-space-space-twounits);
 }
-.school-work-experiance-avatar-content {
+.certifications-avatar-content {
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
 }
-.school-work-experiance-avatar-image {
+.certifications-avatar-image {
   width: auto;
   height: 56px;
   border-radius: 0px;
   margin-bottom: var(--dl-space-space-unit);
 }
-.school-work-experiance-text {
+.certifications-text {
   width: 100%;
   font-size: 20px;
   text-align: left;
   font-weight: bold;
 }
-.school-work-experiance-container1 {
+.certifications-container1 {
   flex: 0 0 auto;
   width: 60vw;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
 }
-.school-work-experiance-title {
+.certifications-title {
   width: auto;
   font-size: 30px;
   font-style: normal;
@@ -57,34 +57,33 @@
   font-weight: 700;
   margin-bottom: var(--dl-space-space-unit);
 }
-.school-work-experiance-text1 {
-  width: auto;
-  font-size: 18px;
-  text-align: left;
-}
-.school-work-experiance-root-class-name {
+.certifications-root-class-name {
   width: 100%;
 }
-.school-work-experiance-root-class-name1 {
+.certifications-root-class-name1 {
   width: 100%;
 }
-.school-work-experiance-root-class-name2 {
+.certifications-root-class-name2 {
   width: 100%;
 }
-.school-work-experiance-root-class-name3 {
+.certifications-root-class-name3 {
   width: 100%;
 }
-.school-work-experiance-root-class-name4 {
+.certifications-root-class-name4 {
   width: 100%;
 }
-.school-work-experiance-root-class-name5 {
+.certifications-root-class-name5 {
   width: 100%;
 }
+
+
+
+
 @media(max-width: 479px) {
-  .school-work-experiance-avatar {
+  .certifications-avatar {
     flex-direction: column;
   }
-  .school-work-experiance-avatar-content {
+  .certifications-avatar-content {
     align-items: center;
     justify-content: center;
   }
