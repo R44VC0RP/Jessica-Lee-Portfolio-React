@@ -50,6 +50,8 @@
   flex-direction: column;
 }
 .school-work-experiance-title {
+  fill: var(--dl-color-jesscolors-primaryblue);
+  color: var(--dl-color-jesscolors-primaryblue);
   width: auto;
   font-size: 30px;
   font-style: normal;
@@ -70,6 +72,7 @@
 }
 .school-work-experiance-root-class-name2 {
   width: 100%;
+  margin-bottom: var(--dl-space-space-halfunit);
 }
 .school-work-experiance-root-class-name3 {
   width: 100%;

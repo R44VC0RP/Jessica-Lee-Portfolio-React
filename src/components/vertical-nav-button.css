@@ -1,0 +1,47 @@
+.vertical-nav-button-container {
+  width: auto;
+  height: auto;
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.vertical-nav-button-container1 {
+  color: #24292E;
+  width: 200px;
+  height: 40px;
+  display: flex;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  transition: 0.3s;
+  align-items: center;
+  border-color: rgba(27, 31, 35, 0.15);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #FAFBFC;
+}
+.vertical-nav-button-container1:hover {
+  color: #fff;
+  background-color: #3369e7;
+}
+.vertical-nav-button-text {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+}
+.vertical-nav-button-root-class-name {
+  margin-bottom: var(--dl-space-space-halfunit);
+}
+.vertical-nav-button-root-class-name1 {
+  margin-bottom: var(--dl-space-space-halfunit);
+}
+.vertical-nav-button-root-class-name2 {
+  margin-bottom: var(--dl-space-space-halfunit);
+}
+.vertical-nav-button-root-class-name3 {
+  margin-bottom: var(--dl-space-space-halfunit);
+}
+

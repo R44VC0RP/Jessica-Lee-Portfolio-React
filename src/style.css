@@ -30,6 +30,7 @@
   --dl-radius-radius-inputradius: 24px;
   --dl-radius-radius-buttonradius: 24px;
   --dl-space-space-oneandhalfunits: 24px;
+  --dl-color-jesscolors-primaryblue: #3369e7ff;
 }
 .button {
   color: var(--dl-color-theme-neutral-dark);
@@ -71,7 +72,6 @@
 }
 .teleport-show {
   display: flex !important;
-  transform: translateY(0%) !important;
 }
 .thq-input {
   color: var(--dl-color-theme-neutral-dark);
@@ -337,7 +337,7 @@
   cursor: pointer;
   display: inline-block;
   overflow: hidden;
-  background: linear-gradient(to right, var(--dl-color-theme-primary1) 50%, var(--dl-color-theme-neutral-dark) 50%);
+  background: linear-gradient(to right, #3369e7 50%, var(--dl-color-theme-neutral-dark) 50%);
   transition: background-position 300ms ease;
   font-weight: 600;
   background-clip: text;

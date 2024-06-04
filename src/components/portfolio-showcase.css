@@ -1,0 +1,104 @@
+.portfolio-showcase-layout251 {
+  width: 100%;
+  height: auto;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+.portfolio-showcase-max-width {
+  gap: var(--dl-space-space-threeunits);
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.portfolio-showcase-column {
+  gap: var(--dl-space-space-halfunit);
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.portfolio-showcase-content {
+  gap: 48px;
+  display: flex;
+  align-self: stretch;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.portfolio-showcase-row {
+  align-items: flex-start;
+}
+.portfolio-showcase-feature1 {
+  flex: 1;
+}
+.portfolio-showcase-content1 {
+  align-self: stretch;
+  align-items: flex-start;
+}
+.portfolio-showcase-feature2 {
+  flex: 1;
+}
+.portfolio-showcase-content2 {
+  align-self: stretch;
+  align-items: flex-start;
+}
+.portfolio-showcase-feature3 {
+  flex: 1;
+}
+.portfolio-showcase-content3 {
+  align-self: stretch;
+  align-items: flex-start;
+}
+.portfolio-showcase-actions {
+  gap: var(--dl-space-space-unit);
+  display: flex;
+  align-items: flex-start;
+}
+@media(max-width: 991px) {
+  .portfolio-showcase-section-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .portfolio-showcase-feature1-image {
+    height: 260px;
+  }
+  .portfolio-showcase-feature2-image {
+    height: 260px;
+  }
+  .portfolio-showcase-feature3-image {
+    height: 260px;
+  }
+}
+@media(max-width: 767px) {
+  .portfolio-showcase-column {
+    width: 100%;
+  }
+  .portfolio-showcase-text {
+    text-align: center;
+  }
+  .portfolio-showcase-row {
+    flex-direction: column;
+  }
+  .portfolio-showcase-feature1-image {
+    width: 100%;
+  }
+  .portfolio-showcase-feature2 {
+    width: auto;
+  }
+  .portfolio-showcase-feature2-image {
+    width: 100%;
+  }
+  .portfolio-showcase-feature3 {
+    width: auto;
+  }
+  .portfolio-showcase-actions {
+    flex-wrap: wrap;
+  }
+}
+@media(max-width: 479px) {
+  .portfolio-showcase-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+}
