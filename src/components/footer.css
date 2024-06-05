@@ -47,21 +47,10 @@
   display: flex;
   align-items: flex-start;
 }
-.footer-link1 {
+.footer-link {
   text-decoration: none;
 }
-.footer-link2 {
-  text-decoration: none;
-}
-.footer-link3 {
-  text-decoration: none;
-}
-.footer-link4 {
-  text-decoration: none;
-}
-.footer-link5 {
-  text-decoration: none;
-}
+
 .footer-social-links {
   gap: var(--dl-space-space-unit);
   display: flex;

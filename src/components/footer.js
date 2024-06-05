@@ -22,23 +22,30 @@ const Footer = (props) => {
             </Link>
           </div>
           <div className="footer-links">
-            <Link to="/">{props.link1}</Link>
-            <Link to="/portfolio">{props.link2}</Link>
+            <a
+              className="thq-body-small thq-link"
+              href="/">{props.link1}</a>
+            <a
+              href="/portfolio"
+              className="thq-body-small thq-link"
+            >
+              {props.link2}
+            </a>
             <a
               href="#certifications"
-              className="footer-link3 thq-body-small thq-link"
+              className="thq-body-small thq-link"
             >
               {props.link3}
             </a>
             <a
               href="#experience"
-              className="footer-link4 thq-body-small thq-link"
+              className="thq-body-small thq-link"
             >
               {props.link4}
             </a>
             <a
-              href="#contact_form"
-              className="footer-link5 thq-body-small thq-link"
+              href="/portfolio#contact_form"
+              className="thq-body-small thq-link"
             >
               {props.link5}
             </a>
@@ -64,7 +71,7 @@ const Footer = (props) => {
               href="https://www.instagram.com/jessica.5714/"
               target="_blank"
               rel="noreferrer noopener"
-              className="footer-link1 thq-body-small thq-link footer-link1"
+              className="footer-link thq-body-small thq-link"
             >
               <svg
                 viewBox="0 0 877.7142857142857 1024"
@@ -80,7 +87,7 @@ const Footer = (props) => {
               href="https://www.linkedin.com/in/jessica-hornung-a522b428a/"
               target="_blank"
               rel="noreferrer noopener"
-              className="footer-link2 thq-body-small thq-link footer-link2"
+              className="footer-link thq-body-small thq-link"
             >
               <svg
                 viewBox="0 0 877.7142857142857 1024"

@@ -201,7 +201,6 @@
 .thq-section-padding {
   width: 100%;
   display: flex;
-  padding: var(--dl-space-space-fiveunits);
   position: relative;
   align-items: center;
   flex-direction: column;
@@ -484,9 +483,7 @@
   }
 }
 @media(max-width: 767px) {
-  .thq-section-padding {
-    padding: var(--dl-space-space-threeunits);
-  }
+  
   .thq-flex-column {
     gap: var(--dl-space-space-oneandhalfunits);
   }
@@ -522,9 +519,7 @@
   }
 }
 @media(max-width: 479px) {
-  .thq-section-padding {
-    padding: var(--dl-space-space-oneandhalfunits);
-  }
+  
   .thq-flex-column {
     gap: var(--dl-space-space-unit);
   }

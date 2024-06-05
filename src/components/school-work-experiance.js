@@ -30,6 +30,11 @@ const SchoolWorkExperiance = (props) => {
             </p>
             <span className="school-work-experiance-text1 thq-body-large">
               {props.bodyText}
+              <ul>
+                {Array.isArray(props.bulletPoints) && props.bulletPoints.map((point) => (
+                  <li className="item-bullet" key={point}>{point}</li>
+                ))}
+              </ul>
             </span>
           </div>
         </div>
@@ -40,13 +45,13 @@ const SchoolWorkExperiance = (props) => {
 
 SchoolWorkExperiance.defaultProps = {
   bodyText:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  bodyTitle: 'Starbucks Coffee Master',
+    "This is a sample body text for a school work experiance.",
+  bodyTitle: 'Job Title',
   businessLogo:
     'https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/800px-Starbucks_Corporation_Logo_2011.svg.png',
   rootClassName: '',
-  timeSpan: '2022-2024',
-  bulletPoints: '•',
+  timeSpan: 'Timeframe',
+  bulletPoints: ['Example 1', 'Example 2', 'Example 3']
 }
 
 SchoolWorkExperiance.propTypes = {
@@ -55,7 +60,7 @@ SchoolWorkExperiance.propTypes = {
   businessLogo: PropTypes.string,
   rootClassName: PropTypes.string,
   timeSpan: PropTypes.string,
-  bulletPoints: PropTypes.string,
+  bulletPoints: PropTypes.array,
 }
 
 export default SchoolWorkExperiance
