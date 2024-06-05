@@ -1,4 +1,3 @@
-
 name: Docker Push
 
 on:
@@ -30,4 +29,10 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: mandarin3d/itsmejessicalee-docker:latest, mandarin3d/itsmejessicalee-docker:${{ github.sha }}
-    
+
+    - name: Send JSON to API endpoint
+      run: |
+        curl -X PUT "https://api.example.com/endpoint" \
+        -H "Authorization: Bearer ${{ secrets.BEARER_TOKEN }}" \
+        -H "Content-Type: application/json" \
+        -d '{"dc_name": "itsmejessicalee", "dc_ip": "192.168.10.80", "dc_port": 5450, "dc_image": "mandarin3d/itsmejessicalee-docker"}'
