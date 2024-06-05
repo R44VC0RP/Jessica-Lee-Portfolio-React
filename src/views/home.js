@@ -29,11 +29,14 @@ const Home = (props) => {
         <meta name="robots" content="noindex" />
       </Helmet>
       <MainNavbar
-        link4="Contact"
-        linkB="Portfolio"
-        linkC="Resume"
-        linkA="About Me"
-        action1="View Portfolio"
+        links={[
+          { href: '#home-education', text: 'Education' },
+          { href: '#home-experience', text: 'Experience' },
+          { href: '#certifications', text: 'Certifications' },
+        ]}
+        linkAhref="#aboutmestart"
+        linkBhref="/portfolio"
+        linkChref="#contactme"
         logoAlt="Jessica Lee Logo"
       ></MainNavbar>
       <div className="home-hero-section">
@@ -53,7 +56,7 @@ const Home = (props) => {
           />
         </div>
       </div>
-      <div id="aboutmestart" className="home-education">
+      <div id="home-education" className="home-education">
         <span className="home-text04">
           <span>Education</span>
           <br></br>
@@ -75,7 +78,7 @@ const Home = (props) => {
           bulletPoints={['Varsity Basketball', 'Varsity Golf', 'National Honor Society member', 'Active participant in the National Thespian Society', 'Member of the Tri-M Music Honor Society', 'Served as Editor in Chief of the yearbook for three years. Leading the publication with creativity and organization']}
         ></SchoolWorkExperiance>
       </div>
-      <div id="experience" className="home-experience">
+      <div id="home-experience" className="home-experience">
         <span className="home-text07">
           <span>Experience</span>
           <br></br>
@@ -118,6 +121,12 @@ const Home = (props) => {
           <br></br>
         </span>
         <Certifications
+          timeSpan="2024"
+          bodyTitle="CPR Certified"
+          businessLogo="/uqykglwy0cj0aepanjhe__93328-200h.jpg"
+          rootClassName="certifications-root-class-name9"
+        ></Certifications>
+        <Certifications
           bodyTitle="Adobe Certified Professional - Illustrator"
           timeSpan="2020"
           businessLogo="/illustrator-badge.svg"
@@ -134,12 +143,6 @@ const Home = (props) => {
           bodyTitle="Adobe Certified Professional - InDesign"
           businessLogo="/indesign-badge.svg"
           rootClassName="certifications-root-class-name8"
-        ></Certifications>
-        <Certifications
-          timeSpan="2024"
-          bodyTitle="CPR Certified"
-          businessLogo="/uqykglwy0cj0aepanjhe__93328-200h.jpg"
-          rootClassName="certifications-root-class-name9"
         ></Certifications>
       </div>
       <Footer rootClassName="footer-root-class-name"></Footer>

@@ -22,33 +22,14 @@ const Footer = (props) => {
             </Link>
           </div>
           <div className="footer-links">
-            <a
-              className="thq-body-small thq-link"
-              href="/">{props.link1}</a>
-            <a
-              href="/portfolio"
-              className="thq-body-small thq-link"
-            >
-              {props.link2}
-            </a>
-            <a
-              href="#certifications"
-              className="thq-body-small thq-link"
-            >
-              {props.link3}
-            </a>
-            <a
-              href="#experience"
-              className="thq-body-small thq-link"
-            >
-              {props.link4}
-            </a>
-            <a
-              href="/portfolio#contact_form"
-              className="thq-body-small thq-link"
-            >
-              {props.link5}
-            </a>
+            {props.links.map((link) => (
+              <a
+                href={link.href}
+                className="thq-body-small thq-link"
+              >
+                {link.text}
+              </a>
+            ))}
           </div>
           <div className="footer-social-links">
             <a
@@ -122,10 +103,10 @@ const Footer = (props) => {
 }
 
 Footer.defaultProps = {
-  link5: 'Contact',
-  link4: 'Experience',
-  link3: 'Certifications',
-  link2: 'Portfolio',
+  links: [
+    { href: '#home-education', text: 'Education' },
+    { href: '#home-experience', text: 'Experience' }
+  ],
   logoAlt: 'Jessica Lee Logo',
   cookiesLink: 'Cookies Policy',
   logoSrc: '/jh%20logo-200h.png',
@@ -136,10 +117,10 @@ Footer.defaultProps = {
 }
 
 Footer.propTypes = {
-  link5: PropTypes.string,
-  link4: PropTypes.string,
-  link3: PropTypes.string,
-  link2: PropTypes.string,
+  links: PropTypes.arrayOf(PropTypes.shape({
+    href: PropTypes.string,
+    text: PropTypes.string
+  })),
   logoAlt: PropTypes.string,
   cookiesLink: PropTypes.string,
   logoSrc: PropTypes.string,
