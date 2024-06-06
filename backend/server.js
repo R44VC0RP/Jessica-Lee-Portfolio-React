@@ -41,6 +41,14 @@ const s3 = new aws.S3({
     signatureVersion: 'v4',
 });
 
+app.get('/', async (req, res) => {
+    try {
+        res.json({ message: 'works!' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+});
+
 app.post('/projects/new', async (req, res) => {
     const { title, description, images } = req.body;
 
