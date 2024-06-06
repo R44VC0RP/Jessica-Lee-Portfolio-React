@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const aws = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 const mongo_user = process.env.MONGO_USER;
 const mongo_password = process.env.MONGO_PASSWORD;
 

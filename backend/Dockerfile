@@ -12,4 +12,7 @@ RUN npm install express mongoose aws-sdk uuid
 COPY backend/ .
 
 EXPOSE $PORT
+ENV PORT=$PORT
+
+
 CMD ["node", "server.js"]
