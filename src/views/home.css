@@ -41,8 +41,9 @@
   margin-left: var(--dl-space-space-fourunits);
 }
 .home-background-rectangle {
+  margin-top: 50px;
   flex: 1;
-  width: 36vw;
+  width: 20vw;
   height: auto;
   display: flex;
   z-index: 0;
