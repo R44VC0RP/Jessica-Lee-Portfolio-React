@@ -20,11 +20,14 @@ RUN npm run build
 # Fetching the latest nginx image
 FROM nginx
 
+# Accepting build argument for nginx config
+ARG NGINX_CONF=nginx.conf
+
 # Copying built assets from builder
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # Copying our nginx.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY ${NGINX_CONF} /etc/nginx/conf.d/default.conf
 
 # Adding backend service
 FROM node:alpine AS backend

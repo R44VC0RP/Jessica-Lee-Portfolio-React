@@ -29,6 +29,8 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: mandarin3d/itsmejessicalee-docker:latest, mandarin3d/itsmejessicalee-docker:${{ github.sha }}
+        build-args: |
+          NGINX_CONF=prod-nginx.conf
 
     - name: Send JSON to API endpoint
       run: |
