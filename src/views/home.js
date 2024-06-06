@@ -24,7 +24,7 @@ const Home = (props) => {
         />
         <meta
           property="og:image"
-          content="https://aheioqhobo.cloudimg.io/v7/_playground-bucket-v2.teleporthq.io_/ace773d9-65a9-44ba-ac39-707201869c92/78be31de-57a6-476c-9018-cdd8ef481839?org_if_sml=1&amp;force_format=original"
+          content="/meta_social_og.webp"
         />
         <meta name="robots" content="noindex" />
       </Helmet>
