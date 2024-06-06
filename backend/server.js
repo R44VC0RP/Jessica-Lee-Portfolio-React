@@ -41,7 +41,7 @@ const s3 = new aws.S3({
     signatureVersion: 'v4',
 });
 
-app.get('/', async (req, res) => {
+app.get('/api', async (req, res) => {
     try {
         res.json({ message: 'works!' });
     } catch (error) {
@@ -49,7 +49,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-app.post('/projects/new', async (req, res) => {
+app.post('/api/projects/new', async (req, res) => {
     const { title, description, images } = req.body;
 
     if (!title || !description || !images || !Array.isArray(images)) {
@@ -99,7 +99,7 @@ app.post('/projects/new', async (req, res) => {
     }
 });
 
-app.get('/projects/getall', async (req, res) => {
+app.get('/api/projects/getall', async (req, res) => {
     try {
         const projects = await Project.find();
         res.json(projects);
@@ -108,7 +108,7 @@ app.get('/projects/getall', async (req, res) => {
     }
 });
 
-app.get('/projects/get/:p_id', async (req, res) => {
+app.get('/api/projects/get/:p_id', async (req, res) => {
     const { p_id } = req.params;
 
     try {
