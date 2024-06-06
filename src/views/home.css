@@ -28,7 +28,7 @@
   margin-bottom: var(--dl-space-space-halfunit);
 }
 .home-header-name-b {
-  color: #3369e7;
+  color: var(--dl-color-jesscolors-primaryblue);
   font-size: 100px;
   align-self: center;
   font-family: "DM Serif Display";

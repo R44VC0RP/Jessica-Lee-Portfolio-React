@@ -30,7 +30,7 @@
   --dl-radius-radius-inputradius: 24px;
   --dl-radius-radius-buttonradius: 24px;
   --dl-space-space-oneandhalfunits: 24px;
-  --dl-color-jesscolors-primaryblue: #3369e7ff;
+  --dl-color-jesscolors-primaryblue: rgb(85, 113, 135);
 }
 .button {
   color: var(--dl-color-theme-neutral-dark);
