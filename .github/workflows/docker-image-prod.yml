@@ -60,12 +60,12 @@ jobs:
         context: .
         file: ./backend/Dockerfile
         push: true
-        tags: mandarin3d/itsmejessicalee-docker-backend:latest, mandarin3d/itsmejessicalee-docker:prod-${{ github.run_id }}
+        tags: mandarin3d/itsmejessicalee-docker-backend:latest, mandarin3d/itsmejessicalee-docker-backend:prod-${{ github.run_id }}
 
     - name: Send JSON to API endpoint
       run: |
         curl -X PUT "https://dockerapi.raavai.com/control/redeploy" \
         -H "Authorization: Bearer ${{ secrets.BEARER_TOKEN }}" \
         -H "Content-Type: application/json" \
-        -d '{"dc_name": "itsmejessicalee-backend-dev", "dc_ip": "192.168.10.185", "dc_port": 5451, "dc_image": "mandarin3d/itsmejessicalee-docker"}'
+        -d '{"dc_name": "itsmejessicalee-backend-dev", "dc_ip": "192.168.10.185", "dc_port": 5451, "dc_image": "itsmejessicalee-docker-backend"}'
 
