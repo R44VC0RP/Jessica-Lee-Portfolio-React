@@ -25,7 +25,7 @@
 }
 .vertical-nav-button-container1:hover {
   color: #fff;
-  background-color: #3369e7;
+  background-color: var(--dl-color-jesscolors-primaryblue);
 }
 .vertical-nav-button-text {
   font-size: 18px;

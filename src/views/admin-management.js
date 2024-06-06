@@ -29,15 +29,7 @@ const AdminManagement = (props) => {
           content="https://aheioqhobo.cloudimg.io/v7/_playground-bucket-v2.teleporthq.io_/ace773d9-65a9-44ba-ac39-707201869c92/78be31de-57a6-476c-9018-cdd8ef481839?org_if_sml=1&amp;force_format=original"
         />
       </Helmet>
-      <MainNavbar
-        link4="Contact"
-        linkB="Portfolio"
-        linkC="Resume"
-        linkA="About Me"
-        action1="View Portfolio"
-        logoAlt="Jessica Lee Logo"
-        rootClassName="main-navbar-root-class-name3"
-      ></MainNavbar>
+      <MainNavbar></MainNavbar>
       <div className="admin-management-container1">
         <span className="admin-management-text">
           Hi Jess, welcome to your dashboard:

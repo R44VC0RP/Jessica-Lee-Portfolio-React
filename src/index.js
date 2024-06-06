@@ -18,10 +18,10 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        {/* <Route component={AdminManagement} exact path="/admin-management" /> */}
+        <Route component={AdminManagement} exact path="/admin" />
         <Route component={Home} exact path="/" />
-        {/* <Route component={Login} exact path="/login" />
-        <Route component={Portfolio} exact path="/portfolio" /> */}
+        {/* <Route component={Login} exact path="/login" /> */}
+        <Route component={Portfolio} exact path="/portfolio" />
         <Route component={NotFound} path="**" />
         <Redirect to="**" />
       </Switch>
@@ -30,3 +30,5 @@ const App = () => {
 }
 
 ReactDOM.render(<App />, document.getElementById('app'))
+
+

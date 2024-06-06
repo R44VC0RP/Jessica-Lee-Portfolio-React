@@ -22,8 +22,9 @@ const Footer = (props) => {
             </Link>
           </div>
           <div className="footer-links">
-            {props.links.map((link) => (
+            {props.links.map((link, index) => (
               <a
+                key={index}
                 href={link.href}
                 className="thq-body-small thq-link"
               >
@@ -104,8 +105,9 @@ const Footer = (props) => {
 
 Footer.defaultProps = {
   links: [
-    { href: '#home-education', text: 'Education' },
-    { href: '#home-experience', text: 'Experience' }
+    { href: '#home-education', text: 'Education', key: 'education' },
+    { href: '#home-experience', text: 'Experience', key: 'experience' },
+    { href: '#certifications', text: 'Certifications', key: 'certifications' },
   ],
   logoAlt: 'Jessica Lee Logo',
   cookiesLink: 'Cookies Policy',
@@ -118,6 +120,7 @@ Footer.defaultProps = {
 
 Footer.propTypes = {
   links: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.string,
     href: PropTypes.string,
     text: PropTypes.string
   })),

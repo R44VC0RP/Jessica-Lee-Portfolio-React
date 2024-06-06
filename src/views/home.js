@@ -28,17 +28,7 @@ const Home = (props) => {
         />
         <meta name="robots" content="noindex" />
       </Helmet>
-      <MainNavbar
-        links={[
-          { href: '#home-education', text: 'Education' },
-          { href: '#home-experience', text: 'Experience' },
-          { href: '#certifications', text: 'Certifications' },
-        ]}
-        linkAhref="#aboutmestart"
-        linkBhref="/portfolio"
-        linkChref="#contactme"
-        logoAlt="Jessica Lee Logo"
-      ></MainNavbar>
+      <MainNavbar></MainNavbar>
       <div className="home-hero-section">
         <span className="home-header-top-a">HELLO I&apos;M</span>
         <span className="home-header-name-b">Jessica Lee</span>

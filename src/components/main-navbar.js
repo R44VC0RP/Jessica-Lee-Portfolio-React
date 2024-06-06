@@ -18,8 +18,9 @@ const MainNavbar = (props) => {
         </Link>
         <div data-thq="thq-navbar-nav" className="main-navbar-desktop-menu">
           <nav className="main-navbar-links">
-            {props.links.map((link) => (
+            {props.links.map((link, index) => (
               <a
+                key={index}
                 href={link.href}
                 className="main-navbar-link thq-body-small thq-link"
               >
@@ -36,8 +37,10 @@ const MainNavbar = (props) => {
 
 MainNavbar.defaultProps = {
   links: [
-    { href: '#home-education', text: 'Education' },
-    { href: '#home-experience', text: 'Experience' }
+    { href: '/#home-education', text: 'Education' },
+    { href: '/#home-experience', text: 'Experience' },
+    { href: '/#certifications', text: 'Certifications' },
+    { href: '/portfolio', text: 'Portfolio' },
   ],
   logoSrc: '/jh%20logo-1500h.png',
   rootClassName: '',
@@ -46,6 +49,7 @@ MainNavbar.defaultProps = {
 
 MainNavbar.propTypes = {
   links: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.string,
     href: PropTypes.string,
     text: PropTypes.string
   })),

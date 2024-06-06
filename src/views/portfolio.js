@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet'
+import { jellyTriangle } from 'ldrs'
+
+jellyTriangle.register()
+
 
 import MainNavbar from '../components/main-navbar'
 import PortfolioShowcase from '../components/portfolio-showcase'
@@ -10,6 +14,42 @@ import Footer from '../components/footer'
 import './portfolio.css'
 
 const Portfolio = (props) => {
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('http://localhost:4000/featured-projects', {
+      method: 'GET'
+    }) // Replace with your API endpoint
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        setData(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <l-jelly-triangle
+          size="30"
+          speed="1.75" 
+          color="black" 
+        ></l-jelly-triangle>
+      </div>
+    );
+  }
+
   return (
     <div className="portfolio-container">
       <Helmet>
@@ -29,20 +69,28 @@ const Portfolio = (props) => {
         />
       </Helmet>
       <MainNavbar
-        link4="Contact"
-        linkB="Portfolio"
-        linkC="Resume"
-        linkA="About Me"
-        action1="View Portfolio"
+        links={[
+          { href: '#home-education', text: 'Education', key: 'education' },
+          { href: '#home-experience', text: 'Experience', key: 'experience' },
+          { href: '#certifications', text: 'Certifications', key: 'certifications' },
+        ]}
+        linkAhref="#aboutmestart"
+        linkBhref="/portfolio"
+        linkChref="#contactme"
         logoAlt="Jessica Lee Logo"
-        rootClassName="main-navbar-root-class-name2"
       ></MainNavbar>
       <PortfolioShowcase></PortfolioShowcase>
-      <PortfolioAll></PortfolioAll>
+      <PortfolioAll ></PortfolioAll>
       <div id="contact_form" className="portfolio-contact">
-        <PrimaryContact contactID="primaryContactSection"></PrimaryContact>
+        <PrimaryContact contactID="primaryContactSection" ></PrimaryContact>
       </div>
-      <Footer rootClassName="footer-root-class-name1"></Footer>
+      <Footer 
+      links={[
+        { href: '#home-education', text: 'Education', key: 'education' },
+        { href: '#home-experience', text: 'Experience', key: 'experience' },
+        { href: '#certifications', text: 'Certifications', key: 'certifications' },
+      ]}
+      rootClassName="footer-root-class-name1"></Footer>
     </div>
   )
 }

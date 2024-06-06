@@ -1,4 +1,4 @@
-# Fetching the latest node image on apline linux
+# Fetching the latest node image on alpine linux
 FROM node:alpine AS builder
 
 # Declaring env
@@ -25,3 +25,16 @@ COPY --from=builder /app/build /usr/share/nginx/html
 
 # Copying our nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Adding backend service
+FROM node:alpine AS backend
+
+WORKDIR /backend
+
+COPY ./backend/package.json ./
+RUN npm install express mongoose aws-sdk uuid
+
+COPY ./backend ./
+
+EXPOSE 3000
+CMD ["node", "server.js"]
