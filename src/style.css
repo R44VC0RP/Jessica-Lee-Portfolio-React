@@ -23,7 +23,7 @@
   --dl-color-theme-secondary1: #A9D5DD;
   --dl-color-theme-secondary2: #F7F7F7;
   --dl-space-space-threeunits: 48px;
-  --dl-color-theme-neutral-dark: #222222;
+  --dl-color-theme-neutral-dark: #4C4C4C;
   --dl-radius-radius-cardradius: 8px;
   --dl-color-theme-neutral-light: #F5F4F4;
   --dl-radius-radius-imageradius: 8px;
@@ -336,7 +336,7 @@
   cursor: pointer;
   display: inline-block;
   overflow: hidden;
-  background: linear-gradient(to right, #3369e7 50%, var(--dl-color-theme-neutral-dark) 50%);
+  background: linear-gradient(to right, var(--dl-color-jesscolors-primaryblue) 50%, var(--dl-color-theme-neutral-dark) 50%);
   transition: background-position 300ms ease;
   font-weight: 600;
   background-clip: text;
