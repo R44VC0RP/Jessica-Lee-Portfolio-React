@@ -70,9 +70,9 @@ const Home = (props) => {
           bulletPoints={['Completed courses in Drawing 1 & 2, 2D Art and Arrangement, and Digital Imaging and Methods (Adobe Suite)', 'Studied Art History to gain a comprehensive understanding of artistic movements and their impacts', 'Mastered Advanced Typography and Creativity and Critique to enhance design skills and creative thinking', 'Engaged in Process and Methods, focusing on the graphic design process, and Graphic Design Principles to solidify foundational design concepts']}
         ></SchoolWorkExperiance>
         <SchoolWorkExperiance
-          bodyText="Attended Edgewood High School, excelling academically while actively participating in varsity basketball and golf teams."
+          bodyText="Attended Edgewood Jr/Sr High School, excelling academically while actively participating in varsity basketball and golf teams."
           timeSpan="3.6 GPA"
-          bodyTitle="Edgewood High School - Merritt Island"
+          bodyTitle="Edgewood Jr/Sr High School | Graduated 2022"
           businessLogo="/edgewood_icon-200h.png"
           rootClassName="school-work-experiance-root-class-name"
           bulletPoints={['Varsity Basketball', 'Varsity Golf', 'National Honor Society member', 'Active participant in the National Thespian Society', 'Member of the Tri-M Music Honor Society', 'Served as Editor in Chief of the yearbook for three years. Leading the publication with creativity and organization']}
