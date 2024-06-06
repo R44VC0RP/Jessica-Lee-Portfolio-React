@@ -37,5 +37,5 @@ jobs:
         curl -X PUT "https://dockerapi.raavai.com/control/redeploy" \
         -H "Authorization: Bearer ${{ secrets.BEARER_TOKEN }}" \
         -H "Content-Type: application/json" \
-        -d '{"dc_name": "itsmejessicalee-dev", "dc_ip": "192.168.10.100", "dc_port": 5451, "dc_image": "mandarin3d/itsmejessicalee-docker"}'
+        -d '{"dc_name": "itsmejessicalee-dev", "dc_ip": "192.168.10.100", "dc_port": 5455, "dc_image": "mandarin3d/itsmejessicalee-docker"}'
 
