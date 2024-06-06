@@ -8,11 +8,11 @@ ENV NODE_ENV production
 WORKDIR /app
 
 # Installing dependencies
-COPY package.json ./
+COPY frontend/package.json ./
 RUN npm install
 
 # Copying all the files in our project
-COPY . .
+COPY frontend/ ./
 
 # Building our application
 RUN npm run build

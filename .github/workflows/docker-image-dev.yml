@@ -30,7 +30,7 @@ jobs:
         push: true
         tags: mandarin3d/itsmejessicalee-docker:latest, mandarin3d/itsmejessicalee-docker:dev-${{ github.run_id }}
         build-args: |
-          NGINX_CONF=dev-nginx.conf
+          NGINX_CONF=./frontend/dev-nginx.conf
 
     - name: Send JSON to API endpoint
       run: |

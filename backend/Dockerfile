@@ -5,11 +5,11 @@ FROM node:alpine
 WORKDIR /backend
 
 # Installing dependencies
-COPY package.json ./
+COPY backend/package.json ./
 RUN npm install express mongoose aws-sdk uuid
 
 # Copying all the files in our project
-COPY . .
+COPY backend/ .
 
 EXPOSE $PORT
 CMD ["node", "server.js"]
