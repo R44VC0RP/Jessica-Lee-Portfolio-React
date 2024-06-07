@@ -7,11 +7,21 @@ import './main-navbar.css'
 
 const MainNavbar = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const name = localStorage.getItem('userName'); // Assuming the user's name is stored in localStorage
     setIsLoggedIn(!!token);
+    setUserName(name);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    setIsLoggedIn(false);
+    setUserName('');
+  };
 
   return (
     <header className={`main-navbar-container ${props.rootClassName}`}>
@@ -34,12 +44,16 @@ const MainNavbar = (props) => {
                 {link.text}
               </a>
             ))}
-            
           </nav>
+          {isLoggedIn && (
+            <div className="main-navbar-user-info">
+              <span className="main-navbar-user-name">{userName}</span>
+              <button onClick={handleLogout} className="main-navbar-logout-button">Logout</button>
+            </div>
+          )}
         </div>
       </header>
     </header>
-    
   )
 }
 
@@ -64,7 +78,6 @@ MainNavbar.propTypes = {
   logoSrc: PropTypes.string,
   rootClassName: PropTypes.string,
   logoAlt: PropTypes.string,
-  
 }
 
 export default MainNavbar

@@ -11,7 +11,6 @@
   width: 100%;
   display: flex;
   z-index: 100;
-  max-width: var(--dl-size-size-maxwidth);
   align-items: center;
   padding-top: var(--dl-space-space-oneandhalfunits);
   padding-left: var(--dl-space-space-threeunits);
@@ -207,4 +206,28 @@
     flex-direction: column;
     gap: 1rem;
   }
+}
+
+.main-navbar-user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--dl-space-space-unit);
+}
+
+.main-navbar-user-name {
+  font-size: 1rem;
+  color: #333;
+}
+
+.main-navbar-logout-button {
+  padding: 0.5rem 1rem;
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.main-navbar-logout-button:hover {
+  background-color: #ff1a1a;
 }

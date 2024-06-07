@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'; // Ensure axios is installed and imported
 
 import PropTypes from 'prop-types'
@@ -9,12 +9,20 @@ const LoginComponent = (props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      window.location.href = '/admin';
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Form submitted');  // Debugging statement
     try {
       const response = await axios.post('/api/users/login', { username, password });
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userName', username);
       // Redirect to the desired route
       window.location.href = '/admin';
     } catch (error) {
@@ -102,4 +110,3 @@ LoginComponent.propTypes = {
 }
 
 export default LoginComponent
-
