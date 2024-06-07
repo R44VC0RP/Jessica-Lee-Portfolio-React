@@ -6,9 +6,9 @@ import './vertical-nav-button.css'
 
 const VerticalNavButton = (props) => {
   return (
-    <div className={`vertical-nav-button-container ${props.rootClassName} `}>
+    <div className={`vertical-nav-button-container ${props.rootClassName} ${props.isActive ? 'active' : ''}`}>
       <div
-        link-click={props.buttonLink}
+        onClick={props.onClick}
         className="vertical-nav-button-container1"
       >
         <span className="vertical-nav-button-text">{props.buttonText}</span>
@@ -21,12 +21,16 @@ VerticalNavButton.defaultProps = {
   buttonLink: 'https://nothing.com',
   buttonText: 'Click Me',
   rootClassName: '',
+  onClick: () => {},
+  isActive: false,
 }
 
 VerticalNavButton.propTypes = {
   buttonLink: PropTypes.string,
   buttonText: PropTypes.string,
   rootClassName: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
+  isActive: PropTypes.bool,
 }
 
 export default VerticalNavButton

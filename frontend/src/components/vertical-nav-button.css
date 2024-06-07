@@ -23,6 +23,11 @@
   justify-content: center;
   background-color: #FAFBFC;
 }
+.vertical-nav-button-container.active .vertical-nav-button-container1 {
+  background-color: rgb(131, 153, 170); /* Change this to your desired active color */
+  color: white;
+}
+
 .vertical-nav-button-container1:hover {
   color: #fff;
   background-color: var(--dl-color-jesscolors-primaryblue);

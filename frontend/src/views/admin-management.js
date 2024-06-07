@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Helmet } from 'react-helmet'
 
@@ -8,6 +8,8 @@ import ProjectItem from '../components/project-item'
 import './admin-management.css'
 
 const AdminManagement = (props) => {
+  const [activeComponent, setActiveComponent] = useState('dashboard')
+
   return (
     <div className="admin-management-container">
       <Helmet>
@@ -39,48 +41,70 @@ const AdminManagement = (props) => {
         <div className="admin-management-vertical-nav">
           <span className="admin-management-text1">Menu</span>
           <VerticalNavButton
-            buttonLink="/admin/"
+            buttonLink="#"
             buttonText="Dashboard"
             rootClassName="vertical-nav-button-root-class-name"
+            onClick={() => setActiveComponent('dashboard')}
+            isActive={activeComponent === 'dashboard'}
           ></VerticalNavButton>
           <VerticalNavButton
-            buttonLink="/admin/projects"
+            buttonLink="#"
             buttonText="Projects"
             rootClassName="vertical-nav-button-root-class-name2"
+            onClick={() => setActiveComponent('projects')}
+            isActive={activeComponent === 'projects'}
           ></VerticalNavButton>
           <VerticalNavButton
-            buttonLink="/admin/control"
+            buttonLink="#"
             buttonText="Website Control"
             rootClassName="vertical-nav-button-root-class-name1"
+            onClick={() => setActiveComponent('control')}
+            isActive={activeComponent === 'control'}
           ></VerticalNavButton>
           <VerticalNavButton
-            buttonLink="/admin/options"
+            buttonLink="#"
             buttonText="Admin Options"
             rootClassName="vertical-nav-button-root-class-name3"
+            onClick={() => setActiveComponent('options')}
+            isActive={activeComponent === 'options'}
           ></VerticalNavButton>
         </div>
         <div className="admin-management-items">
-          <div id="dashboard_hud" className="admin-management-dashboard">
-            <div className="admin-management-container2">
-              <img
-                alt="image"
-                src="https://i.sstatic.net/veUID.png"
-                className="admin-management-image"
-              />
+          {activeComponent === 'dashboard' && (
+            <div id="dashboard_hud" className="admin-management-dashboard">
+              <div className="admin-management-container2">
+                <img
+                  alt="image"
+                  src="https://i.sstatic.net/veUID.png"
+                  className="admin-management-image"
+                />
+              </div>
+              <div className="admin-management-container3">
+                <img
+                  alt="image"
+                  src="https://s3.amazonaws.com/ezoic-site-content/blog/wp-content/uploads/2017/11/07091822/Key-Charts-Pubtelligence-16.jpg"
+                  className="admin-management-image1"
+                />
+              </div>
             </div>
-            <div className="admin-management-container3">
-              <img
-                alt="image"
-                src="https://s3.amazonaws.com/ezoic-site-content/blog/wp-content/uploads/2017/11/07091822/Key-Charts-Pubtelligence-16.jpg"
-                className="admin-management-image1"
-              />
+          )}
+          {activeComponent === 'projects' && (
+            <div id="projects_hud" className="admin-management-projects">
+              <span className="admin-management-text2">You have x Projects</span>
+              <ProjectItem rootClassName="project-item-root-class-name4"></ProjectItem>
+              <ProjectItem rootClassName="project-item-root-class-name5"></ProjectItem>
             </div>
-          </div>
-          <div id="projects_hud" className="admin-management-projects">
-            <span className="admin-management-text2">You have x Projects</span>
-            <ProjectItem rootClassName="project-item-root-class-name4"></ProjectItem>
-            <ProjectItem rootClassName="project-item-root-class-name5"></ProjectItem>
-          </div>
+          )}
+          {activeComponent === 'control' && (
+            <div id="control_hud" className="admin-management-control">
+              {/* Add your Website Control component here */}
+            </div>
+          )}
+          {activeComponent === 'options' && (
+            <div id="options_hud" className="admin-management-options">
+              {/* Add your Admin Options component here */}
+            </div>
+          )}
         </div>
       </div>
     </div>

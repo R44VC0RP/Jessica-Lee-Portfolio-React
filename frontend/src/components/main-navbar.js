@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
@@ -6,6 +6,13 @@ import PropTypes from 'prop-types'
 import './main-navbar.css'
 
 const MainNavbar = (props) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
   return (
     <header className={`main-navbar-container ${props.rootClassName}`}>
       <header data-thq="thq-navbar" className="main-navbar-navbar-interactive">
@@ -32,6 +39,7 @@ const MainNavbar = (props) => {
         </div>
       </header>
     </header>
+    
   )
 }
 

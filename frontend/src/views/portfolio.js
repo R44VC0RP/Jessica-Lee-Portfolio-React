@@ -84,13 +84,7 @@ const Portfolio = (props) => {
       <div id="contact_form" className="portfolio-contact">
         <PrimaryContact contactID="primaryContactSection" ></PrimaryContact>
       </div>
-      <Footer 
-      links={[
-        { href: '#home-education', text: 'Education', key: 'education' },
-        { href: '#home-experience', text: 'Experience', key: 'experience' },
-        { href: '#certifications', text: 'Certifications', key: 'certifications' },
-      ]}
-      rootClassName="footer-root-class-name1"></Footer>
+      <Footer></Footer>
     </div>
   )
 }

@@ -5,6 +5,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  margin-top: 50px;
 }
 .login1-max-width {
   gap: var(--dl-space-space-oneandhalfunits);
@@ -80,6 +81,7 @@
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
+
 }
 .login1-hide-password {
   gap: var(--dl-space-space-halfunit);

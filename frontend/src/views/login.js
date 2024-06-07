@@ -3,7 +3,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 
 import MainNavbar from '../components/main-navbar'
-import Login1 from '../components/login1'
+import LoginComponent from '../components/login1'
 import Footer from '../components/footer'
 import './login.css'
 
@@ -30,17 +30,9 @@ const Login = (props) => {
         />
         <meta name="robots" content="noindex" />
       </Helmet>
-      <MainNavbar
-        link4="Contact"
-        linkB="Portfolio"
-        linkC="Resume"
-        linkA="About Me"
-        action1="View Portfolio"
-        logoAlt="Jessica Lee Logo"
-        rootClassName="main-navbar-root-class-name1"
-      ></MainNavbar>
-      <Login1></Login1>
-      <Footer rootClassName="footer-root-class-name2"></Footer>
+      <MainNavbar></MainNavbar>
+      <LoginComponent></LoginComponent>
+      <Footer></Footer>
     </div>
   )
 }

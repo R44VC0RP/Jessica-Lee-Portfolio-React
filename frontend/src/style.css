@@ -25,7 +25,7 @@
   --dl-space-space-threeunits: 48px;
   --dl-color-theme-neutral-dark: #4C4C4C;
   --dl-radius-radius-cardradius: 8px;
-  --dl-color-theme-neutral-light: #F5F4F4;
+  --dl-color-theme-neutral-light: #F5F4F4; /* This is the background color for the websites */
   --dl-radius-radius-imageradius: 8px;
   --dl-radius-radius-inputradius: 24px;
   --dl-radius-radius-buttonradius: 24px;
@@ -90,8 +90,8 @@
 }
 .thq-button-filled {
   gap: var(--dl-space-space-halfunit);
-  fill: var(--dl-color-theme-secondary1);
-  color: var(--dl-color-theme-secondary1);
+  fill: white;
+  color: white;
   cursor: pointer;
   display: flex;
   transition: 0.3s;
@@ -106,7 +106,7 @@
   padding-right: var(--dl-space-space-oneandhalfunits);
   padding-bottom: var(--dl-space-space-halfunit);
   justify-content: center;
-  background-color: var(--dl-color-theme-primary1);
+  background-color: var(--dl-color-jesscolors-primaryblue);
 }
 .thq-button-filled:hover {
   fill: var(--dl-color-theme-secondary2);

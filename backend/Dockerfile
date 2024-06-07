@@ -6,7 +6,7 @@ WORKDIR /backend
 
 # Installing dependencies
 COPY backend/package.json ./
-RUN npm install express mongoose aws-sdk uuid
+RUN npm install express mongoose aws-sdk uuid axios bcrypt jsonwebtoken
 
 # Copying all the files in our project
 COPY backend/ .

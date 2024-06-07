@@ -135,7 +135,7 @@ const Home = (props) => {
           rootClassName="certifications-root-class-name8"
         ></Certifications>
       </div>
-      <Footer rootClassName="footer-root-class-name"></Footer>
+      <Footer></Footer>
     </div>
   )
 }
