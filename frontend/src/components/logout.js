@@ -6,7 +6,7 @@ const Logout = () => {
 
     useEffect(() => {
         localStorage.removeItem('token');
-        history.push('/login');
+        window.location.href = '/login';
     }, [history]);
 
     return null;

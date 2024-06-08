@@ -96,3 +96,79 @@
   font-weight: 500;
   margin-bottom: var(--dl-space-space-halfunit);
 }
+
+
+/* Button CSS */
+
+.main-button {
+  color: var(--dl-color-jesscolors-primaryblue);
+  font-weight: 600;
+  width: auto;
+  padding: 10px 20px;
+  height: 40px;
+  display: flex;
+  box-shadow: rgba(35, 27, 27, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  transition: 0.3s;
+  align-items: center;
+  border-color: rgba(168, 93, 93, 0.15);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #FAFBFC;
+}
+
+.main-button:hover {
+  color: #fff;
+  background-color: var(--dl-color-jesscolors-primaryblue);
+}
+
+.main-button-bad {
+  color: #a32727;
+  font-weight: 600;
+  width: auto;
+  padding: 10px 20px;
+  height: 40px;
+  display: flex;
+  box-shadow: rgba(35, 27, 27, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  transition: 0.3s;
+  align-items: center;
+  border-color: rgba(168, 93, 93, 0.15);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #FAFBFC;
+}
+
+.main-button-bad:hover {
+  color: #fff;
+  background-color: #a32727;
+}
+
+.main-button-good {
+  color: #27a327;
+  font-weight: 600;
+  width: auto;
+  padding: 10px 20px;
+  height: 40px;
+  display: flex;
+  box-shadow: rgba(35, 27, 27, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  transition: 0.3s;
+  align-items: center;
+  border-color: rgba(168, 93, 93, 0.15);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #FAFBFC;
+}
+
+.main-button-good:hover {
+  color: #fff;
+  background-color: #27a327;
+}
+

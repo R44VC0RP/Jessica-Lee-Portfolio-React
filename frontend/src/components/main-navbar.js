@@ -8,12 +8,18 @@ import './main-navbar.css'
 const MainNavbar = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  const [userImage, setUserImage] = useState('');
+  const [userProfileName, setUserProfileName] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const name = localStorage.getItem('userName'); // Assuming the user's name is stored in localStorage
+    const userImage = localStorage.getItem('userImage'); // Assuming the user's image is stored in localStorage
+    const userProfileName = localStorage.getItem('userProfileName'); // Assuming the user's name is stored in localStorage
     setIsLoggedIn(!!token);
     setUserName(name);
+    setUserImage(userImage);
+    setUserProfileName(userProfileName);
   }, []);
 
   const handleLogout = () => {
@@ -21,6 +27,8 @@ const MainNavbar = (props) => {
     localStorage.removeItem('userName');
     setIsLoggedIn(false);
     setUserName('');
+    setUserImage('');
+    window.location.href = '/login';
   };
 
   return (
@@ -28,8 +36,8 @@ const MainNavbar = (props) => {
       <header data-thq="thq-navbar" className="main-navbar-navbar-interactive">
         <Link to="/" className="main-navbar-navlink">
           <img
-            alt={props.logoAlt}
-            src={props.logoSrc}
+            alt="Jessica Lee Logo"
+            src="/jh%20logo-1500h.png"
             className="main-navbar-image1"
           />
         </Link>
@@ -47,7 +55,10 @@ const MainNavbar = (props) => {
           </nav>
           {isLoggedIn && (
             <div className="main-navbar-user-info">
-              <span className="main-navbar-user-name">{userName}</span>
+              <img src={userImage} className="main-navbar-logo-user" style={{ borderRadius: '50%' }} />
+              <span className="main-navbar-user-name">
+                <a className='thq-link' href="/admin">{userProfileName}</a>
+              </span>
               <button onClick={handleLogout} className="main-navbar-logout-button">Logout</button>
             </div>
           )}
@@ -64,9 +75,6 @@ MainNavbar.defaultProps = {
     { href: '/#certifications', text: 'Certifications' },
     { href: '/portfolio', text: 'Portfolio' },
   ],
-  logoSrc: '/jh%20logo-1500h.png',
-  rootClassName: '',
-  logoAlt: 'Jessica Lee Logo',
 }
 
 MainNavbar.propTypes = {

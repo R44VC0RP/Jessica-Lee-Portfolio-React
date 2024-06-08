@@ -8,6 +8,8 @@ import './login1.css'
 const LoginComponent = (props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [userProfileName, setUserProfileName] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // Define errorMessage state
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,10 +25,14 @@ const LoginComponent = (props) => {
       const response = await axios.post('/api/users/login', { username, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userName', username);
+      localStorage.setItem('userProfileName', response.data.userProfileName);
+      console.log(response.data)
+      localStorage.setItem('userImage', response.data.userImage);
       // Redirect to the desired route
       window.location.href = '/admin';
     } catch (error) {
       console.error('Login failed', error);
+      setErrorMessage('Login failed. Please check your credentials and try again.'); // Set error message
     }
   };
 
@@ -39,6 +45,12 @@ const LoginComponent = (props) => {
               <h2 className="thq-heading-2">Admin Management</h2>
               <div className="login1-have-an-account-login"></div>
             </div>
+            
+            {errorMessage && (
+              <div className="login1-error-message">
+                <p className="thq-body-small">{errorMessage}</p>
+              </div>
+            )}
             <form className="login1-form1" onSubmit={handleSubmit}>
               <div className="login1-email">
                 <label htmlFor="thq-sign-in-1-email" className="thq-body-large">

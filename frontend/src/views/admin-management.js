@@ -5,6 +5,8 @@ import { Helmet } from 'react-helmet'
 import MainNavbar from '../components/main-navbar'
 import VerticalNavButton from '../components/vertical-nav-button'
 import ProjectItem from '../components/project-item'
+import AdminOptions from '../components/admin/adminoptions'
+
 import './admin-management.css'
 
 const AdminManagement = (props) => {
@@ -13,7 +15,7 @@ const AdminManagement = (props) => {
   return (
     <div className="admin-management-container">
       <Helmet>
-        <title>Admin-Management - Jessica Lee | Graphic Designer</title>
+        <title>Admin Management</title>
         <meta
           name="description"
           content="This is the showcase of my life and graphic design portfolio; feel free to contact me if you have any projects or ideas!"
@@ -101,8 +103,8 @@ const AdminManagement = (props) => {
             </div>
           )}
           {activeComponent === 'options' && (
-            <div id="options_hud" className="admin-management-options">
-              {/* Add your Admin Options component here */}
+            <div id="options_hud" className="admin-management-options" style={{ overflowY: 'auto', height: '100%', width: '100%' }}>
+              <AdminOptions></AdminOptions>
             </div>
           )}
         </div>

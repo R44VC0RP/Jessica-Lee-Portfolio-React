@@ -15,9 +15,11 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
                     const response = await axios.get('/api/auth/verify', {
                         headers: { 'Authorization': token }
                     });
+                    console.log("Response", response)
                     setIsAuthenticated(response.data.isAuthenticated);
                 }
             } catch (error) {
+                console.log("Error checking token", error)
                 setIsAuthenticated(false);
             } finally {
                 setLoading(false);
