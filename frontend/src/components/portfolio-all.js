@@ -1,10 +1,48 @@
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-
+import Lightbox from 'react-image-lightbox'
+import 'react-image-lightbox/style.css'
 import './portfolio-all.css'
 
 const PortfolioAll = (props) => {
+  const [images, setImages] = useState([])
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [photoIndex, setPhotoIndex] = useState(0)
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch('/api/projects/get_images')
+        const data = await response.json()
+        console.log(data)
+        const shuffledImages = data.sort(() => 0.5 - Math.random()).slice(0, 7)
+        console.log(shuffledImages)
+        setImages(shuffledImages)
+      } catch (error) {
+        console.error('Error fetching images:', error)
+      }
+    }
+
+    fetchImages()
+  }, [])
+
+  const openLightbox = (index) => {
+    setPhotoIndex(index)
+    setLightboxOpen(true)
+  }
+
+  const closeLightbox = () => {
+    setLightboxOpen(false)
+  }
+
+  const moveNext = () => {
+    setPhotoIndex((photoIndex + 1) % images.length)
+  }
+
+  const movePrev = () => {
+    setPhotoIndex((photoIndex + images.length - 1) % images.length)
+  }
+
   return (
     <div className="portfolio-all-gallery3 thq-section-padding">
       <div className="portfolio-all-max-width">
@@ -16,98 +54,68 @@ const PortfolioAll = (props) => {
         </div>
         <div className="portfolio-all-container">
           <div className="portfolio-all-content">
-            <div className="portfolio-all-container1">
-              <img
-                alt={props.image1Alt}
-                src={props.image1Src}
-                className="portfolio-all-image1 thq-img-ratio-1-1"
-              />
-              <img
-                alt={props.image2Alt}
-                src={props.image2Src}
-                className="portfolio-all-image2 thq-img-ratio-1-1"
-              />
-            </div>
-            <div className="portfolio-all-container2">
-              <img
-                alt={props.image3Alt}
-                src={props.image3Src}
-                className="portfolio-all-image3 thq-img-ratio-4-3"
-              />
-              <img
-                alt={props.image4Alt}
-                src={props.image4Src}
-                className="portfolio-all-image4 thq-img-ratio-1-1"
-              />
-              <img
-                alt={props.image5Alt}
-                src={props.image5Src}
-                className="portfolio-all-image5 thq-img-ratio-4-3"
-              />
-            </div>
-            <div className="portfolio-all-container3">
-              <img
-                alt={props.image6Alt}
-                src={props.image6Src}
-                className="portfolio-all-image6 thq-img-ratio-1-1"
-              />
-              <img
-                alt={props.image7Alt}
-                src={props.image7Src}
-                className="portfolio-all-image7 thq-img-ratio-1-1"
-              />
-            </div>
+              <div className="portfolio-all-container1">
+                {images.length > 0 && 
+                  images.filter((_, index) => index % 3 === 0).map((image, filteredIndex) => (
+                    <img
+                      key={filteredIndex}
+                      alt={image.i_id}
+                      src={image.i_src}
+                      className={`portfolio-all-image1 img-ratio-${filteredIndex % 3 === 0 ? '4-3' : filteredIndex % 3 === 1 ? '1-1' : '16-9'}`}
+                      onClick={() => openLightbox(filteredIndex * 3)}
+                    />
+                  ))
+                }
+              </div>
+              <div className="portfolio-all-container2">
+                {images.length > 0 && 
+                  images.filter((_, index) => index % 3 === 1).map((image, filteredIndex) => (
+                    <img
+                      key={filteredIndex}
+                      alt={image.i_id}
+                      src={image.i_src}
+                      className={`portfolio-all-image1 img-ratio-${filteredIndex % 3 === 0 ? '4-3' : filteredIndex % 3 === 1 ? '1-1' : '16-9'}`}
+                      onClick={() => openLightbox(filteredIndex * 3 + 1)}
+                    />
+                  ))
+                }
+              </div>
+              <div className="portfolio-all-container3">
+                {images.length > 0 && 
+                  images.filter((_, index) => index % 3 === 2).map((image, filteredIndex) => (
+                    <img
+                      key={filteredIndex}
+                      alt={image.i_id}
+                      src={image.i_src}
+                      className={`portfolio-all-image1 img-ratio-${filteredIndex % 3 === 0 ? '4-3' : filteredIndex % 3 === 1 ? '1-1' : '16-9'}`}
+                      onClick={() => openLightbox(filteredIndex * 3 + 2)}
+                    />
+                  ))
+                }
+              </div>
           </div>
-        </div>
+        </div> 
       </div>
+      {lightboxOpen && (
+        <Lightbox
+          mainSrc={images[photoIndex].i_src}
+          onCloseRequest={closeLightbox}
+          onMovePrevRequest={movePrev}
+          onMoveNextRequest={moveNext}
+        />
+      )}
     </div>
   )
 }
 
 PortfolioAll.defaultProps = {
-  image2Alt: 'Jessica Lee showcasing her graphic design portfolio',
-  image3Alt:
-    'Jessica Lee receiving her Adobe Certified Professional certificate',
-  image4Alt: 'Jessica Lee conducting a coffee tasting session',
-  image3Src:
-    'https://images.unsplash.com/photo-1491336477066-31156b5e4f35?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTcxNzQ1OTAyOXw&ixlib=rb-4.0.3&q=80&w=1080',
-  image7Alt: 'Jessica Lee participating in a design workshop',
-  image6Alt: 'Jessica Lee at a Starbucks store creating latte art',
   heading1: 'Gallery',
-  image7Src:
-    'https://images.unsplash.com/photo-1511667282954-8957078364a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTcxNzQ1OTAyOXw&ixlib=rb-4.0.3&q=80&w=1080',
-  image2Src:
-    'https://images.unsplash.com/photo-1563434564528-8fdf5996e622?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTcxNzQ1OTAzMHw&ixlib=rb-4.0.3&q=80&w=1080',
-  image1Src:
-    'https://images.unsplash.com/photo-1488841415048-53af7de8f138?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTcxNzQ1OTAzMHw&ixlib=rb-4.0.3&q=80&w=1080',
-  content1:
-    'Explore the gallery below to see Jessica Lee in action as a Starbucks Coffee Master and Graphic & Social Designer.',
-  image5Alt: 'Jessica Lee designing a social media campaign',
-  image5Src:
-    'https://images.unsplash.com/photo-1466690672306-5f92132f7248?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTcxNzQ1OTAzMHw&ixlib=rb-4.0.3&q=80&w=1080',
-  image6Src: 'https://play.teleporthq.io/static/svg/default-img.svg',
-  image1Alt: 'Jessica Lee presenting at a Starbucks event',
-  image4Src:
-    'https://images.unsplash.com/photo-1512486754243-f38ddb8e53b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTcxNzQ1OTAyOXw&ixlib=rb-4.0.3&q=80&w=1080',
+  content1: 'Explore my portfolio to see my latest projects.',
 }
 
 PortfolioAll.propTypes = {
-  image2Alt: PropTypes.string,
-  image3Alt: PropTypes.string,
-  image4Alt: PropTypes.string,
-  image3Src: PropTypes.string,
-  image7Alt: PropTypes.string,
-  image6Alt: PropTypes.string,
   heading1: PropTypes.string,
-  image7Src: PropTypes.string,
-  image2Src: PropTypes.string,
-  image1Src: PropTypes.string,
   content1: PropTypes.string,
-  image5Alt: PropTypes.string,
-  image5Src: PropTypes.string,
-  image6Src: PropTypes.string,
-  image1Alt: PropTypes.string,
-  image4Src: PropTypes.string,
 }
 
 export default PortfolioAll

@@ -109,6 +109,7 @@ Footer.defaultProps = {
     { href: '#home-education', text: 'Education', key: 'education' },
     { href: '#home-experience', text: 'Experience', key: 'experience' },
     { href: '#certifications', text: 'Certifications', key: 'certifications' },
+    { href: '/portfolio', text: 'Portfolio', key: 'portfolio' },
     { href: '/login', text: 'Login', key: 'login' },
   ],
   logoAlt: 'Jessica Lee Logo',

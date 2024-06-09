@@ -6,11 +6,13 @@ import MainNavbar from '../components/main-navbar'
 import VerticalNavButton from '../components/vertical-nav-button'
 import ProjectItem from '../components/project-item'
 import AdminOptions from '../components/admin/adminoptions'
+import Projects from '../components/admin/projects'
+import WebControl from '../components/admin/webcontrol'
 
 import './admin-management.css'
 
 const AdminManagement = (props) => {
-  const [activeComponent, setActiveComponent] = useState('dashboard')
+  const [activeComponent, setActiveComponent] = useState('projects')
 
   return (
     <div className="admin-management-container">
@@ -42,13 +44,13 @@ const AdminManagement = (props) => {
       <div className="admin-management-assets">
         <div className="admin-management-vertical-nav">
           <span className="admin-management-text1">Menu</span>
-          <VerticalNavButton
+          {/* <VerticalNavButton
             buttonLink="#"
             buttonText="Dashboard"
             rootClassName="vertical-nav-button-root-class-name"
             onClick={() => setActiveComponent('dashboard')}
             isActive={activeComponent === 'dashboard'}
-          ></VerticalNavButton>
+          ></VerticalNavButton> */}
           <VerticalNavButton
             buttonLink="#"
             buttonText="Projects"
@@ -91,15 +93,12 @@ const AdminManagement = (props) => {
             </div>
           )}
           {activeComponent === 'projects' && (
-            <div id="projects_hud" className="admin-management-projects">
-              <span className="admin-management-text2">You have x Projects</span>
-              <ProjectItem rootClassName="project-item-root-class-name4"></ProjectItem>
-              <ProjectItem rootClassName="project-item-root-class-name5"></ProjectItem>
-            </div>
+            
+            <Projects></Projects>
           )}
           {activeComponent === 'control' && (
             <div id="control_hud" className="admin-management-control">
-              {/* Add your Website Control component here */}
+              <WebControl></WebControl> 
             </div>
           )}
           {activeComponent === 'options' && (
