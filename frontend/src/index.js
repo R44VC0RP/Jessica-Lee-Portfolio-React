@@ -14,6 +14,7 @@ import Login from './views/login'
 import Portfolio from './views/portfolio'
 import NotFound from './views/not-found'
 import ProtectedRoute from './components/protectedroute'
+import Contact from './views/contact'
 import Logout from './components/logout' // Import the Logout component
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
         <Route component={Home} exact path="/" />
         <Route component={Login} exact path="/login" />
         <Route component={Portfolio} exact path="/portfolio" />
+        <Route component={Contact} exact path="/contact" />
         <Route component={Logout} exact path="/logout" /> 
         <Route component={NotFound} path="**" />
         <Redirect to="**" />

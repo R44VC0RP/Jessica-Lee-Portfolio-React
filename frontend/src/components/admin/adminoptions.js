@@ -60,13 +60,20 @@ const AdminOptions = () => {
     };
 
     const handleDeleteAccount = async (username) => {
+        if (username === localStorage.getItem('userName')) {
+            alert('You cannot delete your own account');
+            return;
+        }
         const token = localStorage.getItem('token');
-        await axios.post('/api/users/delete', { username }, {
+        if (confirm('Are you sure you want to delete this account? This action cannot be undone.') === true) {
+            
+            await axios.post('/api/users/delete', { username }, {
             headers: {
-                'Authorization': `${token}`
-            },
-        });
-        setDeleteUser(username);
+                    'Authorization': `${token}`
+                },
+            });
+            setDeleteUser(username);
+        }
         const response = await axios.get('/api/users', {
             headers: {
                 'Authorization': `${token}`

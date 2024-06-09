@@ -127,3 +127,18 @@
     font-size: 40px;
   }
 }
+
+@media (max-width: 479px) {
+  .centered-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: 20px;
+  }
+}
+@media (min-width: 480px) {
+  .centered-div {
+    display: none;
+  }
+}

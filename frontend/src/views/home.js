@@ -46,6 +46,11 @@ const Home = (props) => {
           />
         </div>
       </div>
+      <div className="centered-div ">
+        <button className="main-button" onClick={() => window.location.href='/portfolio'}>
+          Check out my portfolio!
+        </button>
+      </div>
       <div id="home-education" className="home-education">
         <span className="home-text04">
           <span>Education</span>

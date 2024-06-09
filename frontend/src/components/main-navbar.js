@@ -52,6 +52,12 @@ const MainNavbar = (props) => {
                 {link.text}
               </a>
             ))}
+            <a
+              href="/contact"
+              className="main-button"
+            >
+              Contact Me
+            </a>
           </nav>
           {isLoggedIn && (
             <div className="main-navbar-user-info">
@@ -72,7 +78,6 @@ MainNavbar.defaultProps = {
   links: [
     { href: '/#home-education', text: 'Education' },
     { href: '/#home-experience', text: 'Experience' },
-    { href: '/#certifications', text: 'Certifications' },
     { href: '/portfolio', text: 'Portfolio' },
   ],
 }

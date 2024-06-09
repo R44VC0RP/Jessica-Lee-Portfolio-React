@@ -14,8 +14,12 @@ const mongo_user = process.env.MONGO_USER;
 const mongo_password = process.env.MONGO_PASSWORD;
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require('nodemailer');
+const axios = require('axios');
+// const bodyParser = require('body-parser');
 
 app.use(express.json());
+// app.use(bodyParser.json());
 
 mongoose.connect(`mongodb+srv://${mongo_user}:${mongo_password}@cluster0.gkeabiy.mongodb.net/itsmejessicalee?retryWrites=true&w=majority&appName=Cluster0`, {
     useNewUrlParser: true,
@@ -58,8 +62,15 @@ const s3 = new aws.S3({
     signatureVersion: 'v4',
 });
 
-
-
+const transporter = nodemailer.createTransport({
+    host: 'email-smtp.us-east-2.amazonaws.com', // Replace with your Amazon SES SMTP endpoint
+    port: 465, // Use the TLS Wrapper Port for secure connection
+    secure: true, // true for 465, false for other ports
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD
+    }
+});
 const authenticate = (req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) {
@@ -209,7 +220,7 @@ app.get('/api/users', authenticate, async (req, res) => {
 });
 
 app.post('/api/users/login', async (req, res) => {
-    
+
     const { username, password } = req.body;
     console.log("Logging in user" + username)
     const user = await User.findOne({ username });
@@ -356,7 +367,7 @@ app.put('/api/projects/update/:id', authenticate, upload.array('files', 10), asy
     project.p_date = projectDate;
 
     if (files && files.length > 0) {
-        
+
         const existingImages = await Image.find({ p_id: project.p_id });
         const existingImageIds = existingImages.map(image => image.i_id);
         for (const image of existingImages) {
@@ -404,6 +415,51 @@ app.get('/api/projects/get_images', async (req, res) => {
         res.status(500).json({ message: 'Server error', error });
     }
 });
+
+app.post('/api/email/submit', async (req, res) => {
+    const { name, email, message, token } = req.body;
+    console.log("Email received: ", name, email, message);
+
+    // Verify reCAPTCHA token
+    const secretKey = '6LdfWvQpAAAAAHYLnwEWBqOi4OfH7rQpIenG9p2r';
+    const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
+
+    try {
+        const response = await axios.post(verificationUrl);
+        const { success } = response.data;
+
+        if (!success) {
+            return res.status(400).send('reCAPTCHA verification failed');
+        }
+
+        const mailOptions = {
+            from: '"Your Name" <jess@mail.raavcorp.com>', // Replace with your "from" address
+            to: 'ryan@theryanvogel.com', // Replace with the recipient's email address
+            subject: 'New Contact Form Submission from ' + name,
+            html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="text-align: center; color: #4A5568;">Contact Form Submission</h2>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Message:</strong></p>
+                <p>${message}</p>
+            </div>
+        `
+        };
+
+        try {
+            await transporter.sendMail(mailOptions);
+            res.send('Email sent successfully');
+        } catch (error) {
+            console.error('Error sending email:', error);
+            res.status(500).send('Failed to send email');
+        } // Add this closing brace to properly close the try block
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).send('Failed to send email');
+    } // Add this closing brace to properly close the try block
+}); // Add this closing parenthesis to properly close the app.post function
+
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
