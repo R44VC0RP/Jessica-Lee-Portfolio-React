@@ -18,7 +18,11 @@ const Projects = () => {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await axios.get('/api/projects/getall');
+                const response = await axios.get('/api/projects/getall', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 setProjects(response.data);
                 setProjectCount(response.data.length);
             } catch (error) {
