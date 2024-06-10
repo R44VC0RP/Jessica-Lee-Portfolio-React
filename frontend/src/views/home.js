@@ -41,7 +41,7 @@ const Home = (props) => {
         <div className="home-background-rectangle">
           <img
             alt="image"
-            src="/pretty_jess_v4.png"
+            src="/jess_masked_better.png"
             className="home-image"
           />
         </div>

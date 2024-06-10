@@ -71,7 +71,7 @@ const Contact = () => {
                 <div className="flex flex-col h-screen">
                     <div className="flex flex-col justify-center items-center pb-3 mt-4 px-6">
                         <h2 className="text-4xl font-bold pb-3" style={{ fontFamily: 'DM Serif Display' }}>Contact Me</h2>
-                        <img src="/pretty_jess_v4.png" alt="Person" className="w-1/2 h-auto object-cover" />
+                        <img src="/jess_masked_better.png" alt="Person" className="w-1/2 h-auto object-cover" />
                         <p className="text-sm text-gray-700 pt-3">You can contact me for jobs and other inquiries. I will get back to you shortly.</p>
                     </div>
                     <div className="p-8">
@@ -132,7 +132,7 @@ const Contact = () => {
                                 <p className="text-sm text-gray-700">You can contact me for jobs and other inquiries. I will get back to you shortly.</p>
                             </div>
                             <div className=" bg-[#D4D1CC] rounded-lg">
-                                <img src="/pretty_jess_v4.png" alt="Person" style={{ maxHeight: '60%' }} />
+                                <img src="/jess_masked_better.png" alt="Person" style={{ maxHeight: '60%' }} />
                             </div>
                         </div>
                         <div className="md:w-1/2 p-8">
