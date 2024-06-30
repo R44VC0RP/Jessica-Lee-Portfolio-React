@@ -51,9 +51,17 @@ const userSchema = new mongoose.Schema({
     userCreated: { type: Date, required: false, default: Date.now },
 });
 
+const contactSchema = new mongoose.Schema({
+    c_name: String,
+    c_email: String,
+    c_message: String,
+    c_date: { type: Date, default: Date.now },
+});
+
 const Project = mongoose.model('Project', projectSchema);
 const Image = mongoose.model('Image', imageSchema);
 const User = mongoose.model('User', userSchema);
+const Contact = mongoose.model('Contact', contactSchema);
 
 const s3 = new aws.S3({
     endpoint: 'https://475fe7a9850defb092143b6adbda5028.r2.cloudflarestorage.com',
@@ -433,12 +441,12 @@ app.post('/api/email/submit', async (req, res) => {
         }
 
         const mailOptions = {
-            from: '"Your Name" <jess@mail.raavcorp.com>', // Replace with your "from" address
-            to: 'ryan@theryanvogel.com', // Replace with the recipient's email address
+            from: '"New Contact Form Submission" <jess@mail.raavcorp.com>', // Replace with your "from" address
+            to: 'jessicaleehornung@gmail.com', // Replace with the recipient's email address
             subject: 'New Contact Form Submission from ' + name,
             html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-                <h2 style="text-align: center; color: #4A5568;">Contact Form Submission</h2>
+                <h2 style="text-align: center; color: #4A5568;">New Contact Form Submission</h2>
                 <p><strong>Name:</strong> ${name}</p>
                 <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Message:</strong></p>
@@ -446,6 +454,9 @@ app.post('/api/email/submit', async (req, res) => {
             </div>
         `
         };
+
+        const contact = new Contact({ c_name: name, c_email: email, c_message: message });
+        await contact.save();
 
         try {
             await transporter.sendMail(mailOptions);
