@@ -1,4 +1,4 @@
-name: Docker Push (development mode)
+name: Docker Push - Development Push
 
 on:
   push:
