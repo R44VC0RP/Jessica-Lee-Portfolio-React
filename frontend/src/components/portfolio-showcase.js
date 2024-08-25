@@ -4,6 +4,7 @@ import VerticalNavButton from './vertical-nav-button'
 import Lightbox from 'react-image-lightbox'
 import 'react-image-lightbox/style.css'
 import './portfolio-showcase.css'
+import { API_URL } from '../global';
 
 const PortfolioShowcase = () => {
   const [projects, setProjects] = useState([])
@@ -14,7 +15,7 @@ const PortfolioShowcase = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/newest`);
+        const response = await fetch(`${API_URL}/api/projects/newest`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -23,7 +24,7 @@ const PortfolioShowcase = () => {
           if (project.p_images && project.p_images.length > 0) {
             const imageId = project.p_images[0];
             try {
-              const imageResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/get_images/${imageId}`);
+              const imageResponse = await fetch(`${API_URL}/api/projects/get_images/${imageId}`);
               if (!imageResponse.ok) {
                 throw new Error('Network response was not ok');
               }
