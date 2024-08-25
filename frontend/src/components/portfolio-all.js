@@ -12,7 +12,7 @@ const PortfolioAll = (props) => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch('/api/projects/get_images')
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/get_images`)
         const data = await response.json()
         console.log(data)
         const shuffledImages = data.sort(() => 0.5 - Math.random()).slice(0, 7)
