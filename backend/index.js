@@ -16,15 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
-
-const cors = require('cors');
-
-const corsOptions = {
-    origin: process.env.FRONTEND_URL || 'https://itsmejessicalee.com',
-    optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
+app.use(express.json());
 
 mongoose.connect(`mongodb+srv://${mongo_user}:${mongo_password}@cluster0.gkeabiy.mongodb.net/itsmejessicalee?retryWrites=true&w=majority&appName=Cluster0`, {
     useNewUrlParser: true,
