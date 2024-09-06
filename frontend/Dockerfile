@@ -1,18 +1,27 @@
+# Use a lightweight Node.js image
+FROM node:14-alpine
 
-FROM node:20
-
+# Set the working directory inside the container
 WORKDIR /app
 
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-RUN npm install
+# Install dependencies
+RUN npm ci --only=production
 
+# Copy the rest of the application code
 COPY . .
 
+# Build the React app
 RUN npm run build
 
-ENV NODE_ENV production
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
 
-ENV REACT_APP_BACKEND_URL=https://api.ci.mandarin3d.com
+# Expose the port on which the app will run
+EXPOSE $PORT
 
-CMD ["npm", "run", "start"]
+# Start the app
+CMD ["npm", "start"]
