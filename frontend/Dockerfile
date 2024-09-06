@@ -26,7 +26,7 @@ ARG NGINX_CONF=nginx.conf
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # Copying our nginx.conf
-COPY frontend/prod-nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./prod-nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE ${PORT}
 CMD ["nginx", "-g", "daemon off;"]
