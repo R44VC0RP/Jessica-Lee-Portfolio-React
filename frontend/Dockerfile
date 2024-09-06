@@ -1,8 +1,8 @@
-# Fetching the latest node image on alpine linux
-FROM node:alpine AS builder
+# Stage 1: Build the React app
+FROM node:14-alpine AS builder
 
 # Declaring env
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 # Setting up the work directory
 WORKDIR /app
@@ -17,16 +17,14 @@ COPY frontend/ ./
 # Building our application
 RUN npm run build
 
-# Fetching the latest nginx image
-FROM nginx
-
-ARG NGINX_CONF=nginx.conf
+# Stage 2: Serve the React app with Nginx
+FROM nginx:latest
 
 # Copying built assets from builder
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # Copying our nginx.conf
-COPY ./prod-nginx.conf /etc/nginx/conf.d/default.conf
+COPY frontend/prod-nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE ${PORT}
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
