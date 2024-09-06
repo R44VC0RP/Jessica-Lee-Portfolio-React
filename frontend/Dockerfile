@@ -1,27 +1,32 @@
-# Use a lightweight Node.js image
-FROM node:14-alpine
+# Fetching the latest node image on alpine linux
+FROM node:alpine AS builder
 
-# Set the working directory inside the container
+# Declaring env
+ENV NODE_ENV production
+
+# Setting up the work directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Installing dependencies
+COPY frontend/package.json ./
+RUN npm install
 
-# Install dependencies
-RUN npm ci --only=production
+# Copying all the files in our project
+COPY frontend/ ./
 
-# Copy the rest of the application code
-COPY . .
-
-# Build the React app
+# Building our application
 RUN npm run build
 
-# Set environment variables
-ENV NODE_ENV=production
-ENV PORT=3000
+# Fetching the latest nginx image
+FROM nginx
 
-# Expose the port on which the app will run
-EXPOSE $PORT
+ARG NGINX_CONF=nginx.conf
 
-# Start the app
-CMD ["npm", "start"]
+# Copying built assets from builder
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Copying our nginx.conf
+COPY frontend/prod-nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE ${PORT}
+CMD ["nginx", "-g", "daemon off;"]
