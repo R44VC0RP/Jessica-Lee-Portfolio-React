@@ -1,32 +1,18 @@
-# Fetching the latest node image on alpine linux
-FROM node:alpine AS builder
 
-# Declaring env
-ENV NODE_ENV production
+FROM node:20
 
-# Setting up the work directory
 WORKDIR /app
 
-# Installing dependencies
-COPY frontend/package.json ./
+COPY package*.json ./
+
 RUN npm install
 
-# Copying all the files in our project
-COPY frontend/ ./
+COPY . .
 
-# Building our application
 RUN npm run build
 
-# Fetching the latest nginx image
-FROM nginx
+ENV NODE_ENV production
 
-ARG NGINX_CONF=nginx.conf
+ENV REACT_APP_BACKEND_URL=https://api.ci.mandarin3d.com
 
-# Copying built assets from builder
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Copying our nginx.conf
-COPY ${NGINX_CONF} /etc/nginx/conf.d/default.conf
-
-EXPOSE ${PORT}
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "start"]
