@@ -5,11 +5,11 @@ FROM node:alpine
 WORKDIR /backend
 
 # Installing dependencies
-COPY backend/package.json ./
+COPY ./package.json ./
 RUN npm install express mongoose aws-sdk uuid axios bcrypt jsonwebtoken
 
 # Copying all the files in our project
-COPY backend/ .
+COPY ./ .
 
 EXPOSE $PORT
 ENV PORT=$PORT
