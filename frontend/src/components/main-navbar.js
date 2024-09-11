@@ -37,7 +37,7 @@ const MainNavbar = (props) => {
         <Link to="/" className="main-navbar-navlink">
           <img
             alt="Jessica Lee Logo"
-            src="/jh%20logo-1500h.png"
+            src="/jhlogo.png"
             className="main-navbar-image1"
           />
         </Link>

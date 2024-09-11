@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import Lightbox from 'react-image-lightbox'
-import 'react-image-lightbox/style.css'
+import Lightbox from 'react-18-image-lightbox'
+import 'react-18-image-lightbox/style.css'
 import './portfolio-all.css'
 
 const PortfolioAll = (props) => {

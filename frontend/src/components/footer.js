@@ -114,7 +114,7 @@ Footer.defaultProps = {
   ],
   logoAlt: 'Jessica Lee Logo',
   cookiesLink: 'Cookies Policy',
-  logoSrc: '/jh%20logo-200h.png',
+  logoSrc: '/jhlogo.png',
   link1: 'Home',
   privacyLink: 'Privacy Policy',
   termsLink: 'Terms of Use',

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ProjectItem from '../project-item';
 import axios from 'axios';
-import Dropzone from 'react-dropzone';
+import { UploadButton, UploadDropzone } from "@uploadthing/react";
+import { FaUpload, FaTimes } from 'react-icons/fa';
 
 const Projects = () => {
     const [projectCount, setProjectCount] = useState(0);
@@ -13,6 +14,8 @@ const Projects = () => {
     const [files, setFiles] = useState([]);
     const [projectDate, setProjectDate] = useState('');
     const [editProjectId, setEditProjectId] = useState(null);
+    const [tags, setTags] = useState([]);
+    const [currentTag, setCurrentTag] = useState('');
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -33,15 +36,23 @@ const Projects = () => {
         fetchProjects();
     }, []);
 
-    const handleDrop = (acceptedFiles) => {
-        if (files.length + acceptedFiles.length <= 10) {
-            const newFiles = acceptedFiles.map(file => Object.assign(file, {
-                preview: URL.createObjectURL(file)
-            }));
-            setFiles([...files, ...newFiles]);
-        } else {
-            alert('You can only upload up to 10 files.');
+    const handleUploadComplete = (data) => {
+        const newFiles = data.map(file => ({
+            name: file.name,
+            preview: file.url
+        }));
+        setFiles([...files, ...newFiles]);
+    };
+
+    const handleAddTag = () => {
+        if (currentTag.trim() !== '' && !tags.includes(currentTag.trim())) {
+            setTags([...tags, currentTag.trim()]);
+            setCurrentTag('');
         }
+    };
+
+    const handleRemoveTag = (tagToRemove) => {
+        setTags(tags.filter(tag => tag !== tagToRemove));
     };
 
     const handleSubmit = async () => {
@@ -50,18 +61,15 @@ const Projects = () => {
             return;
         }
 
-        const formData = new FormData();
-        formData.append('projectName', projectName);
-        formData.append('projectDescription', projectDescription);
-        formData.append('projectDate', projectDate);
-        files.forEach(file => {
-            formData.append('files', file);
-        });
-
         try {
-            const response = await axios.post('/api/projects/add', formData, {
+            const response = await axios.post('/api/projects/add', {
+                projectName,
+                projectDescription,
+                projectDate,
+                files: files.map(file => file.preview),
+                tags
+            }, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`
                 }
             });
@@ -72,6 +80,7 @@ const Projects = () => {
             setProjectDescription('');
             setProjectDate('');
             setFiles([]);
+            setTags([]);
             // Fetch projects again to update the list
             const updatedProjects = await axios.get('/api/projects/getall');
             setProjects(updatedProjects.data);
@@ -88,18 +97,15 @@ const Projects = () => {
             return;
         }
 
-        const formData = new FormData();
-        formData.append('projectName', projectName);
-        formData.append('projectDescription', projectDescription);
-        formData.append('projectDate', projectDate);
-        files.forEach(file => {
-            formData.append('files', file);
-        });
-
         try {
-            const response = await axios.put(`/api/projects/update/${editProjectId}`, formData, {
+            const response = await axios.put(`/api/projects/update/${editProjectId}`, {
+                projectName,
+                projectDescription,
+                projectDate,
+                files: files.map(file => file.preview),
+                tags
+            }, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`
                 }
             });
@@ -110,6 +116,7 @@ const Projects = () => {
             setProjectDescription('');
             setProjectDate('');
             setFiles([]);
+            setTags([]);
             // Fetch projects again to update the list
             const updatedProjects = await axios.get('/api/projects/getall');
             setProjects(updatedProjects.data);
@@ -126,6 +133,7 @@ const Projects = () => {
         setProjectDescription(project.p_description);
         setProjectDate(project.p_date);
         setFiles(project.p_images.map(image => ({ preview: image })));
+        setTags(project.p_tags || []);
         setIsEditModalOpen(true);
     };
 
@@ -200,20 +208,49 @@ const Projects = () => {
                             value={projectDate}
                             onChange={(e) => setProjectDate(e.target.value)}
                         />
-                        <Dropzone onDrop={handleDrop} accept={{ 'image/*': ['.png', '.jpeg', '.jpg', '.webp'] }}>
-                            {({ getRootProps, getInputProps }) => (
-                                <div {...getRootProps()} className="border-dashed border-2 border-gray-400 p-4 mb-4 w-full h-36 flex items-center justify-center">
-                                    <input {...getInputProps()} />
-                                    <p>Drop files here, or click to select files</p>
-                                </div>
-                            )}
-                        </Dropzone>
+                        <UploadDropzone
+                            endpoint="imageUploader"
+                            onClientUploadComplete={handleUploadComplete}
+                            className=""
+                        />
                         <div className="flex flex-wrap">
-                            {renderFilePreviews()}
+                            {files.map((file, index) => (
+                                <div key={index} className="relative w-24 h-24 m-2 border border-gray-400 rounded-lg">
+                                    <img src={file.preview} alt={file.name} className="w-full h-full object-cover" />
+                                    <button 
+                                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                        onClick={() => handleDeleteFile(index)}
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                className="border p-2 w-full"
+                                placeholder="Add a tag"
+                                value={currentTag}
+                                onChange={(e) => setCurrentTag(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
+                            />
+                            <button className="main-button mt-2" onClick={handleAddTag}>Add Tag</button>
+                            <div className="flex flex-wrap mt-2">
+                                {tags.map((tag, index) => (
+                                    <span key={index} className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                        {tag}
+                                        <button onClick={() => handleRemoveTag(tag)} className="ml-2 text-red-500">
+                                            <FaTimes />
+                                        </button>
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                         <div className="flex justify-between">
-                            <button className="main-button" onClick={handleSubmit}>Submit</button>
+                            
                             <button className="main-button-bad" onClick={() => setIsModalOpen(false)}>Cancel</button>
+                            <button className="main-button" onClick={handleSubmit}>Submit</button>
                         </div>
                     </div>
                 </div>
@@ -244,16 +281,44 @@ const Projects = () => {
                             value={projectDate}
                             onChange={(e) => setProjectDate(e.target.value)}
                         />
-                        <Dropzone onDrop={handleDrop} accept={{ 'image/*': ['.png', '.jpeg', '.jpg', '.webp'] }}>
-                            {({ getRootProps, getInputProps }) => (
-                                <div {...getRootProps()} className="border-dashed border-2 border-gray-400 p-4 mb-4 w-full h-36 flex items-center justify-center">
-                                    <input {...getInputProps()} />
-                                    <p>Drop files here, or click to select files</p>
-                                </div>
-                            )}
-                        </Dropzone>
+                        <UploadDropzone
+                            endpoint="imageUploader"
+                            onClientUploadComplete={handleUploadComplete}
+                            className=""
+                        />
                         <div className="flex flex-wrap">
-                            {renderFilePreviews()}
+                            {files.map((file, index) => (
+                                <div key={index} className="relative w-24 h-24 m-2 border border-gray-400 rounded-lg">
+                                    <img src={file.preview} alt={file.name} className="w-full h-full object-cover" />
+                                    <button 
+                                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                        onClick={() => handleDeleteFile(index)}
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                className="border p-2 w-full"
+                                placeholder="Add a tag"
+                                value={currentTag}
+                                onChange={(e) => setCurrentTag(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
+                            />
+                            <button className="main-button mt-2" onClick={handleAddTag}>Add Tag</button>
+                            <div className="flex flex-wrap mt-2">
+                                {tags.map((tag, index) => (
+                                    <span key={index} className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                        {tag}
+                                        <button onClick={() => handleRemoveTag(tag)} className="ml-2 text-red-500">
+                                            <FaTimes />
+                                        </button>
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                         <div className="flex justify-between">
                             <button className="main-button" onClick={handleEditSubmit}>Submit</button>

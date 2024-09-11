@@ -6,12 +6,12 @@ import './vertical-nav-button.css'
 
 const VerticalNavButton = (props) => {
   return (
-    <div className={`vertical-nav-button-container ${props.rootClassName} ${props.isActive ? 'active' : ''}`}>
+    <div className={`vertical-nav-button-container ${props.rootClassName} ${props.isActive ? 'active' : ''} w-full md:w-auto`}>
       <div
         onClick={props.onClick}
-        className="vertical-nav-button-container1"
+        className="vertical-nav-button-container1 py-2 px-4 md:py-3 md:px-6 text-center md:text-left"
       >
-        <span className="vertical-nav-button-text">{props.buttonText}</span>
+        <span className="vertical-nav-button-text text-sm md:text-base">{props.buttonText}</span>
       </div>
     </div>
   )

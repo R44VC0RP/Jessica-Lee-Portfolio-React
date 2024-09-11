@@ -1,30 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import Lightbox from 'react-18-image-lightbox';
+import 'react-18-image-lightbox/style.css';
 import './project-item.css';
+import { Link } from 'react-router-dom';
 
 const ProjectItem = ({ project, onEdit }) => {
-  const [images, setImages] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
   const token = localStorage.getItem('token');
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const imagePromises = project.p_images.map(imageId => axios.get(`/api/projects/get_images/${imageId}`));
-        const responses = await Promise.all(imagePromises);
-        const imageUrls = responses.map(response => response.data);
-        setImages(imageUrls);
-      } catch (error) {
-        console.error('Error fetching project images:', error);
-      }
-    };
 
-    fetchImages();
-  }, [project.p_images]);
 
   const handleDelete = async () => {
     try {
@@ -44,19 +31,27 @@ const ProjectItem = ({ project, onEdit }) => {
     <div className="flex flex-row items-center w-full justify-between project-card">
       <div className="flex flex-row items-center w-full">
         <div className="flex flex-col items-center p-4" id="photos">
-          <img
-            alt={project.p_title}
-            src={images[0]}
-            className="w-auto h-24 object-cover border border-gray-300 rounded cursor-pointer"
-            style={{ maxWidth: '450px', maxHeight: '450px' }}
-            onClick={() => setIsOpen(true)}
-          />
+          <Link to={`/projects/${project.p_id}`}>
+            <img
+              alt={project.p_title}
+              src={project.p_images[0]}
+              className="w-auto h-24 object-cover border border-gray-300 rounded cursor-pointer"
+              style={{ maxWidth: '450px', maxHeight: '450px' }}
+            />
+          </Link>
           <span className="text-gray-500 mt-2">{project.p_images.length} photos</span>
           <span className="text-gray-500 mt-2">{new Date(project.p_date).toLocaleDateString()}</span>
         </div>
         <div className="flex flex-col items-start p-4" id="titleanddescription">
-          <span className="text-lg font-bold">{project.p_title}</span>
+          <Link to={`/projects/${project.p_id}`} className="text-lg font-bold hover:underline">
+            {project.p_title}
+          </Link>
           <span className="text-gray-700">{project.p_description}</span>
+          {project.p_tags && project.p_tags.map((tag, index) => (
+            <span key={index} className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
       <div className="flex flex-col items-center space-y-2" id="buttons">
@@ -65,18 +60,19 @@ const ProjectItem = ({ project, onEdit }) => {
       </div>
       {isOpen && (
         <Lightbox
-          mainSrc={images[photoIndex]}
-          nextSrc={images[(photoIndex + 1) % images.length]}
-          prevSrc={images[(photoIndex + images.length - 1) % images.length]}
+          mainSrc={project.p_images[photoIndex]}
+          nextSrc={project.p_images[(photoIndex + 1) % project.p_images.length]}
+          prevSrc={project.p_images[(photoIndex + project.p_images.length - 1) % project.p_images.length]}
           onCloseRequest={() => setIsOpen(false)}
           onMovePrevRequest={() =>
-            setPhotoIndex((photoIndex + images.length - 1) % images.length)
+            setPhotoIndex((photoIndex + project.p_images.length - 1) % project.p_images.length)
           }
           onMoveNextRequest={() =>
-            setPhotoIndex((photoIndex + 1) % images.length)
+            setPhotoIndex((photoIndex + 1) % project.p_images.length)
           }
         />
       )}
+      
     </div>
   );
 };

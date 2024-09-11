@@ -23,27 +23,8 @@ const Portfolio = (props) => {
       try {
         const response = await fetch('/api/projects/getall');
         const data = await response.json();
-        console.log(data);
-        
-        const fetchImageSrc = async (imageId) => {
-          try {
-            const response = await fetch(`/api/projects/get_images/${imageId}`);
-            const data = await response.json();
-            return data;
-          } catch (error) {
-            console.error('Error fetching image source:', error);
-            return '';
-          }
-        };
-
-        const projectsWithImages = await Promise.all(data.map(async (project) => {
-          const imageSrcs = await Promise.all(project.p_images.map(fetchImageSrc));
-          return { ...project, p_images: imageSrcs };
-        }));
-
-        console.log(projectsWithImages)
-
-        setProjects(projectsWithImages);
+        console.log(data)
+        setProjects(data);
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -73,7 +54,7 @@ const Portfolio = (props) => {
       <MainNavbar></MainNavbar>
       <PortfolioShowcase></PortfolioShowcase>
       <PortfolioAll></PortfolioAll>
-      {projects.map((project, index) => (
+      {projects.reverse().map((project, index) => (
         <PortfolioHighlight
           key={index}
           title={project.p_title}

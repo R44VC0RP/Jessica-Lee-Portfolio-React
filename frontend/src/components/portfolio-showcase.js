@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import VerticalNavButton from './vertical-nav-button'
-import Lightbox from 'react-image-lightbox'
-import 'react-image-lightbox/style.css'
+import Lightbox from 'react-18-image-lightbox'
+import 'react-18-image-lightbox/style.css'
 import './portfolio-showcase.css'
 import { API_URL } from '../global';
 
@@ -20,23 +20,6 @@ const PortfolioShowcase = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        const imagePromises = data.map(async (project) => {
-          if (project.p_images && project.p_images.length > 0) {
-            const imageId = project.p_images[0];
-            try {
-              const imageResponse = await fetch(`/api/projects/get_images/${imageId}`);
-              if (!imageResponse.ok) {
-                throw new Error('Network response was not ok');
-              }
-              const imageUrl = await imageResponse.json();
-              project.p_image = imageUrl;
-            } catch (error) {
-              console.error('Error fetching project image:', error);
-            }
-          }
-        });
-
-        await Promise.all(imagePromises);
         setProjects(data);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -70,7 +53,7 @@ const PortfolioShowcase = () => {
               <div key={index} className={`portfolio-showcase-feature${index + 1} thq-flex-column`}>
                 <img
                   alt={project.p_title}
-                  src={project.p_image}
+                  src={project.p_images[0]}
                   className={`thq-img-ratio-native-image portfolio-showcase-feature${index + 1}-image`}
                   onClick={() => openLightbox(index)}
                 />

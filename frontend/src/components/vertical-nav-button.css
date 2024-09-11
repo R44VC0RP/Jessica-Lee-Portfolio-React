@@ -9,7 +9,6 @@
 }
 .vertical-nav-button-container1 {
   color: #24292E;
-  width: 200px;
   height: 40px;
   display: flex;
   box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
@@ -22,6 +21,7 @@
   flex-direction: column;
   justify-content: center;
   background-color: #FAFBFC;
+  font-size: 10px;
 }
 .vertical-nav-button-container.active .vertical-nav-button-container1 {
   background-color: rgb(131, 153, 170); /* Change this to your desired active color */
@@ -33,7 +33,7 @@
   background-color: var(--dl-color-jesscolors-primaryblue);
 }
 .vertical-nav-button-text {
-  font-size: 18px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 500;
 }
