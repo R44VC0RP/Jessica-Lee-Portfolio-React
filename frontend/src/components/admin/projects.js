@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import ProjectItem from '../project-item';
 import axios from 'axios';
-import { UploadButton, UploadDropzone, uploadFiles } from "@uploadthing/react";
+import { generateUploadDropzone, generateUploadButton } from "@uploadthing/react";
 import { FaUpload, FaTimes, FaFilePdf } from 'react-icons/fa';
 import { pdfjs } from 'react-pdf';
+import ReactDOM from 'react-dom';
 
 // Initialize pdfjs worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
+// Generate the UploadDropzone and UploadButton components
+const UploadDropzone = generateUploadDropzone();
+const UploadButton = generateUploadButton();
 
 const Projects = () => {
     const [projectCount, setProjectCount] = useState(0);
@@ -224,9 +229,25 @@ const Projects = () => {
                 const blob = await response.blob();
                 const imageFile = new File([blob], `page_${pageNum}.png`, { type: 'image/png' });
 
-                // Use the UploadThing client to upload the image
-                const uploadResponse = await uploadFiles([imageFile], 'imageUploader');
-                handleUploadComplete(uploadResponse);
+                // Use the UploadButton to upload the image
+                const uploadButton = document.createElement('button');
+                uploadButton.style.display = 'none';
+                document.body.appendChild(uploadButton);
+                
+                const UploadButtonComponent = UploadButton({
+                    endpoint: "imageUploader",
+                    onClientUploadComplete: (res) => {
+                        console.log("Upload Completed", res);
+                        handleUploadComplete(res);
+                    },
+                    onUploadError: (error) => {
+                        console.error("Upload Error", error);
+                    },
+                });
+
+                ReactDOM.render(UploadButtonComponent, uploadButton);
+                uploadButton.click();
+                document.body.removeChild(uploadButton);
             }
         } else {
             alert('Please upload a valid PDF file.');
@@ -276,8 +297,13 @@ const Projects = () => {
                         <div className="flex items-center space-x-4 mb-4">
                             <UploadDropzone
                                 endpoint="imageUploader"
-                                onClientUploadComplete={handleUploadComplete}
-                                className="flex-1"
+                                onClientUploadComplete={(res) => {
+                                    console.log("Files: ", res);
+                                    handleUploadComplete(res);
+                                }}
+                                onUploadError={(error) => {
+                                    console.error("ERROR!", error);
+                                }}
                             />
                             <div className="relative">
                                 <input
