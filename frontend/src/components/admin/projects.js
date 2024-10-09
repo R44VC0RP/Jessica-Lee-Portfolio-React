@@ -207,35 +207,41 @@ const Projects = () => {
     };
 
     const handlePdfUpload = async (event) => {
+        console.log("handlePdfUpload called", event.target.files);
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
-            setPdfFile(file);
-            const pdfDocument = await pdfjs.getDocument({ url: URL.createObjectURL(file) }).promise;
-            const totalPages = pdfDocument.numPages;
+            try {
+                setPdfFile(file);
+                const pdfDocument = await pdfjs.getDocument({ url: URL.createObjectURL(file) }).promise;
+                const totalPages = pdfDocument.numPages;
 
-            for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-                const page = await pdfDocument.getPage(pageNum);
-                const scale = 1.5;
-                const viewport = page.getViewport({ scale });
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
+                for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+                    const page = await pdfDocument.getPage(pageNum);
+                    const scale = 1.5;
+                    const viewport = page.getViewport({ scale });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
 
-                await page.render({ canvasContext: context, viewport }).promise;
+                    await page.render({ canvasContext: context, viewport }).promise;
 
-                const imageDataUrl = canvas.toDataURL('image/png');
-                const response = await fetch(imageDataUrl);
-                const blob = await response.blob();
-                const imageFile = new File([blob], `page_${pageNum}.png`, { type: 'image/png' });
+                    const imageDataUrl = canvas.toDataURL('image/png');
+                    const response = await fetch(imageDataUrl);
+                    const blob = await response.blob();
+                    const imageFile = new File([blob], `page_${pageNum}.png`, { type: 'image/png' });
 
-                try {
-                    const uploadResponse = await uploadFiles([imageFile], "imageUploader");
-                    console.log("Upload Completed for page", pageNum, uploadResponse);
-                    handleUploadComplete(uploadResponse);
-                } catch (error) {
-                    console.error("Upload Error for page", pageNum, error);
+                    try {
+                        const uploadResponse = await uploadFiles([imageFile], "imageUploader");
+                        console.log("Upload Completed for page", pageNum, uploadResponse);
+                        handleUploadComplete(uploadResponse);
+                    } catch (error) {
+                        console.error("Upload Error for page", pageNum, error);
+                    }
                 }
+            } catch (error) {
+                console.error("PDF processing error:", error);
+                alert('Error processing PDF: ' + error.message);
             }
         } else {
             alert('Please upload a valid PDF file.');
