@@ -19,7 +19,7 @@ const nodemailer = require('nodemailer');
 const axios = require('axios');
 const { PDFDocument } = require('pdf-lib');
 
-const { UTApi } = require("uploadthing/server");
+const { UTApi, UTFile } = require("uploadthing/server");
 const { fromBuffer } = require('pdf2pic');
 
 app.use(express.json());
