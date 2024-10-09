@@ -20,7 +20,7 @@ const axios = require('axios');
 const { PDFDocument } = require('pdf-lib');
 const sharp = require('sharp');
 const { UTApi } = require("uploadthing/server");
-const { createCanvas } = require('canvas');
+const { fromBuffer } = require('pdf2pic');
 
 app.use(express.json());
 
@@ -397,24 +397,23 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     }
 
     const pdfBuffer = req.file.buffer;
-    const pdfDoc = await PDFDocument.load(pdfBuffer);
+    const options = {
+      density: 300,
+      saveFilename: "untitled",
+      savePath: "./",
+      format: "png",
+      width: 2000,
+      height: 2000
+    };
+
+    const convert = fromBuffer(pdfBuffer, options);
     const imageUrls = [];
 
-    for (let i = 0; i < pdfDoc.getPageCount(); i++) {
-      const page = pdfDoc.getPage(i);
-      const { width, height } = page.getSize();
-      const scale = 2;
-      const canvas = createCanvas(width * scale, height * scale);
-      const context = canvas.getContext('2d');
+    const pageCount = await convert.getPageCount();
 
-      // Render the PDF page to the canvas
-      const pngImage = await page.render({
-        canvas: context,
-        viewport: page.getViewport({ scale }),
-      }).promise;
-
-      // Convert canvas to buffer
-      const pngBuffer = canvas.toBuffer('image/png');
+    for (let i = 1; i <= pageCount; i++) {
+      const { base64 } = await convert(i);
+      const pngBuffer = Buffer.from(base64, 'base64');
 
       // Convert PNG to JPEG
       const jpegBuffer = await sharp(pngBuffer)
@@ -423,7 +422,7 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
 
       // Upload the JPEG using UploadThing
       const uploadResponse = await utapi.uploadFiles(
-        new File([jpegBuffer], `page_${i + 1}.jpg`, { type: 'image/jpeg' })
+        new File([jpegBuffer], `page_${i}.jpg`, { type: 'image/jpeg' })
       );
 
       if (uploadResponse.data) {

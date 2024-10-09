@@ -1,19 +1,23 @@
 # Fetching the latest node image on alpine linux
-FROM node:alpine
+FROM node:16
 
 # Setting up the work directory
-WORKDIR /backend
+WORKDIR /app
 
 # Installing dependencies
-COPY ./package.json ./
-RUN npm install express mongoose aws-sdk uuid axios bcrypt jsonwebtoken
+COPY package*.json ./
+
+RUN apt-get update && apt-get install -y \
+    libglib2.0-0 \
+    libgl1-mesa-glx \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN npm install
 
 # Copying all the files in our project
-COPY ./ .
+COPY . .
 
-EXPOSE $PORT
-ENV PORT=$PORT
+EXPOSE 4000
 
-
-CMD ["npm", "run", "dev"]
+CMD ["node", "index.js"]
 
