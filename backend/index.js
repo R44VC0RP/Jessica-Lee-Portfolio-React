@@ -425,8 +425,12 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     const imageUrls = [];
 
     for (let i = 1; i <= pageCount; i++) {
-        const resolved = await convert(i, { responseType: "image" });
-        console.log(`Page ${i} converted`);
+        convert(i, { responseType: "image" })
+        .then((resolve) => {
+            console.log("Page 1 is now converted as image");
+
+            return resolve;
+        });
         
         
     }
