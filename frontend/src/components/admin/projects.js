@@ -3,7 +3,7 @@ import ProjectItem from '../project-item';
 import axios from 'axios';
 import { generateUploadDropzone, generateUploadButton } from "@uploadthing/react";
 import { FaUpload, FaTimes, FaFilePdf } from 'react-icons/fa';
-import { pdfjs } from 'react-pdf';
+import { pdfjs } from 'pdfjs-dist';
 import ReactDOM from 'react-dom';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
