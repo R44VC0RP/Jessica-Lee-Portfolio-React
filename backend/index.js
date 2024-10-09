@@ -415,14 +415,10 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
       const { base64 } = await convert(i);
       const pngBuffer = Buffer.from(base64, 'base64');
 
-      // Convert PNG to JPEG
-      const jpegBuffer = await sharp(pngBuffer)
-        .jpeg({ quality: 80 })
-        .toBuffer();
-
+      // Upload the JPEG using UploadThing
       // Upload the JPEG using UploadThing
       const uploadResponse = await utapi.uploadFiles(
-        new File([jpegBuffer], `page_${i}.jpg`, { type: 'image/jpeg' })
+        new File([pngBuffer], `page_${i}.jpg`, { type: 'image/png' })
       );
 
       if (uploadResponse.data) {
