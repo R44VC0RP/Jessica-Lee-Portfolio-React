@@ -455,7 +455,6 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
         } else if (uploadResponse.error) {
             console.error(`Error uploading file: ${uploadResponse.error.message}`);
         }
-        fs.unlinkSync(image.path);
         count++;
     }
 
@@ -464,6 +463,41 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     console.error('Error processing PDF:', error);
     res.status(500).json({ error: 'Error processing PDF: ' + error.message });
   }
+});
+
+
+
+app.get('/api/getimages', async (req, res) => {
+    try {
+        const tempDir = './tmp-images';
+        const files = await fs.promises.readdir(tempDir);
+        let html = '<div>';
+
+        for (const file of files) {
+            if (file.match(/\.(jpg|jpeg|png|gif)$/i)) {
+                const filePath = path.join(tempDir, file);
+                const stats = await fs.promises.stat(filePath);
+                const fileBuffer = await fs.promises.readFile(filePath);
+                const base64Image = fileBuffer.toString('base64');
+                const mimeType = `image/${path.extname(file).slice(1)}`;
+
+                html += `
+                    <div>
+                        <img src="data:${mimeType};base64,${base64Image}" alt="${file}" />
+                        <p>Name: ${file}</p>
+                        <p>Size: ${stats.size} bytes</p>
+                        <p>Last Modified: ${stats.mtime}</p>
+                    </div>
+                `;
+            }
+        }
+
+        html += '</div>';
+        res.send(html);
+    } catch (error) {
+        console.error('Error getting images:', error);
+        res.status(500).send('<p>Error getting images: ' + error.message + '</p>');
+    }
 });
 
 app.listen(port, () => {
