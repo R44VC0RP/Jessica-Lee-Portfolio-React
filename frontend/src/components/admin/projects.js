@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ProjectItem from '../project-item';
 import axios from 'axios';
 import { generateUploadDropzone, generateUploadButton } from "@uploadthing/react";
-import { FaUpload, FaTimes, FaFilePdf } from 'react-icons/fa';
+import { FaUpload, FaTimes, FaFilePdf, FaSpinner } from 'react-icons/fa';
 import { uploadFiles } from './uploadthing'; // Adjust the import path as needed
 
 // Generate the UploadDropzone and UploadButton components
@@ -22,6 +22,7 @@ const Projects = () => {
     const [tags, setTags] = useState([]);
     const [currentTag, setCurrentTag] = useState('');
     const [pdfFile, setPdfFile] = useState(null);
+    const [isPdfProcessing, setIsPdfProcessing] = useState(false);
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -207,6 +208,7 @@ const Projects = () => {
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
             try {
+                setIsPdfProcessing(true);
                 const formData = new FormData();
                 formData.append('pdf', file);
 
@@ -232,6 +234,8 @@ const Projects = () => {
             } catch (error) {
                 console.error("PDF processing error:", error);
                 alert('Error processing PDF: ' + (error.response?.data?.error || error.message));
+            } finally {
+                setIsPdfProcessing(false);
             }
         } else {
             alert('Please upload a valid PDF file.');
@@ -296,20 +300,30 @@ const Projects = () => {
                                     onChange={handlePdfUpload}
                                     className="hidden"
                                     id="pdfUpload"
+                                    disabled={isPdfProcessing}
                                 />
                                 <label
                                     htmlFor="pdfUpload"
-                                    className="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors"
+                                    className={`flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors ${isPdfProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 >
-                                    <FaFilePdf className="mr-2" />
-                                    Upload PDF
+                                    {isPdfProcessing ? (
+                                        <>
+                                            <FaSpinner className="mr-2 animate-spin" />
+                                            Processing...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FaFilePdf className="mr-2" />
+                                            Upload PDF
+                                        </>
+                                    )}
                                 </label>
                             </div>
                         </div>
                         <div className="flex flex-wrap">
                             {files.map((file, index) => (
-                                <div key={index} className="relative w-24 h-24 m-2 border border-gray-400 rounded-lg">
-                                    <img src={file.preview} alt={file.name} className="w-full h-full object-cover" />
+                                <div key={index} className="relative w-24 h-24 m-2 border border-gray-400 rounded-lg overflow-hidden">
+                                    <img src={file.preview} alt={file.name} className="w-full h-full object-contain" />
                                     <button 
                                         className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
                                         onClick={() => handleDeleteFile(index)}
