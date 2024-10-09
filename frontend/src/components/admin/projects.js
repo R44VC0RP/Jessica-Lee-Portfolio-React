@@ -3,11 +3,7 @@ import ProjectItem from '../project-item';
 import axios from 'axios';
 import { generateUploadDropzone, generateUploadButton } from "@uploadthing/react";
 import { FaUpload, FaTimes, FaFilePdf } from 'react-icons/fa';
-import { pdfjs } from 'react-pdf';
-import ReactDOM from 'react-dom';
 import { uploadFiles } from './uploadthing'; // Adjust the import path as needed
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 // Generate the UploadDropzone and UploadButton components
 const UploadDropzone = generateUploadDropzone();
@@ -211,37 +207,31 @@ const Projects = () => {
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
             try {
-                setPdfFile(file);
-                const pdfDocument = await pdfjs.getDocument({ url: URL.createObjectURL(file) }).promise;
-                const totalPages = pdfDocument.numPages;
+                const formData = new FormData();
+                formData.append('pdf', file);
 
-                for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-                    const page = await pdfDocument.getPage(pageNum);
-                    const scale = 1.5;
-                    const viewport = page.getViewport({ scale });
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-
-                    await page.render({ canvasContext: context, viewport }).promise;
-
-                    const imageDataUrl = canvas.toDataURL('image/png');
-                    const response = await fetch(imageDataUrl);
-                    const blob = await response.blob();
-                    const imageFile = new File([blob], `page_${pageNum}.png`, { type: 'image/png' });
-
-                    try {
-                        const uploadResponse = await uploadFiles([imageFile], "imageUploader");
-                        console.log("Upload Completed for page", pageNum, uploadResponse);
-                        handleUploadComplete(uploadResponse);
-                    } catch (error) {
-                        console.error("Upload Error for page", pageNum, error);
+                const response = await axios.post('/api/convert-pdf', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
                     }
+                });
+
+                console.log("PDF conversion response:", response.data);
+
+                if (response.data.imageUrls && response.data.imageUrls.length > 0) {
+                    const newFiles = response.data.imageUrls.map((url, index) => ({
+                        name: `page_${index + 1}.jpg`,
+                        preview: url
+                    }));
+                    setFiles([...files, ...newFiles]);
+                } else {
+                    console.error("No image URLs returned from the server");
+                    alert('Error processing PDF: No images were generated');
                 }
             } catch (error) {
                 console.error("PDF processing error:", error);
-                alert('Error processing PDF: ' + error.message);
+                alert('Error processing PDF: ' + (error.response?.data?.error || error.message));
             }
         } else {
             alert('Please upload a valid PDF file.');
