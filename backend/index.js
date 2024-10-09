@@ -400,11 +400,13 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     const options = {
       density: 300,
       saveFilename: "untitled",
-      savePath: "./",
+      savePath: "./tmp-images",
       format: "png",
       width: 2000,
       height: 2000
     };
+
+    
 
     const pdfLoadDoc = await PDFDocument.load(pdfBuffer);
     const pageCount = pdfLoadDoc.getPageCount();
@@ -414,13 +416,27 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     const imageUrls = [];
 
     for (let i = 1; i <= pageCount; i++) {
-        const resolved = await convert(i, { responseType: "buffer" });
+        const resolved = await convert(i, { responseType: "image" });
         console.log(`Page ${i} converted`);
-        const upload = await utapi.uploadFiles(
-            new File([resolved], `page_${i}.png`, { type: 'image/png' })
-        );
-        imageUrls.push(upload.data.url);
+        
+        
     }
+
+    
+
+    const tempDir = './tmp-images';
+    fs.readdir(tempDir, (err, files) => {
+      if (err) {
+        console.error('Error reading temp directory:', err);
+        return;
+      }
+      console.log('Images in temp directory:');
+      files.forEach(file => {
+        if (path.extname(file).toLowerCase() === '.png') {
+          console.log(file);
+        }
+      });
+    });
 
     res.json({ imageUrls });
   } catch (error) {
