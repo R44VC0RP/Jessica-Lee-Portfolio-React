@@ -1,92 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Lightbox from 'react-18-image-lightbox';
 import 'react-18-image-lightbox/style.css';
 import { useMediaQuery } from 'react-responsive';
-
 
 const PortfolioHighlight = ({ title, description, images }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [photoIndex, setPhotoIndex] = useState(0);
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+    const sectionRef = useRef(null);
+    const infoRef = useRef(null);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!sectionRef.current || !infoRef.current || isMobile) return;
 
+            const sectionRect = sectionRef.current.getBoundingClientRect();
+            const infoRect = infoRef.current.getBoundingClientRect();
+
+            if (sectionRect.top <= 0 && sectionRect.bottom >= infoRect.height) {
+                infoRef.current.style.position = 'sticky';
+                infoRef.current.style.top = '0';
+            } else {
+                infoRef.current.style.position = 'static';
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isMobile]);
 
     return (
-        <div className="flex flex-row p-4" style={{ width: '70%' }}>
-            {isMobile ? (
-                <div className="flex flex-col items-center">
-                    <div className="flex flex-row">
-                        {images.map((image, index) => (
-                            <img
-                                key={index}
-                                src={image}
-                                alt={`Portfolio image ${image}`}
-                                className="mb-2 project-image"
-                                style={{ maxWidth: '250px', objectFit: 'cover' }}
-                                onClick={() => { setPhotoIndex(index); setIsOpen(true); }}
-                            />
-                        ))}
+        <div ref={sectionRef} className="flex flex-col md:flex-row p-4 w-full">
+            <div className="w-full md:w-1/2 flex flex-col items-center">
+                {images.map((image, index) => (
+                    <div key={index} className="w-full mb-4">
+                        <img
+                            src={image}
+                            alt={`Portfolio image ${index + 1}`}
+                            className="w-full h-auto object-contain cursor-pointer"
+                            onClick={() => { setPhotoIndex(index); setIsOpen(true); }}
+                        />
                     </div>
-                    {images.length > 1 && (
-                        <div className="text-center mt-2">
-                            <a href="#" onClick={() => { setPhotoIndex(0); setIsOpen(true); }}>
-                                See {images.length - 1} more image{images.length - 1 > 1 ? 's' : ''}
-                            </a>
-                        </div>
-                    )}
-                    <div className="flex flex-col items-center">
-                        <h2 className="thq-heading-2 mt-4">{title}</h2>
-                        <p className="text-sm">{description}</p>
-                    </div>
-                    <hr className="border-t-2 border-gray-300 w-full my-4" />
-                    
+                ))}
+            </div>
+            <div ref={infoRef} className="w-full md:w-1/2 md:pl-4">
+                <div className="sticky top-0">
+                    <h2 className="text-2xl font-bold mb-4">{title}</h2>
+                    <p className="text-lg">{description}</p>
                 </div>
-            ) : (
-                <div className="flex flex-row p-4 w-full">
-                    <div className="flex flex-col items-center mr-4 w-1/2">
-                        <div className="w-full">
-                            <img
-                                key={images[0]}
-                                src={images[0]}
-                                alt={`Portfolio image ${images[0]}`}
-                                className="mb-2 project-image w-full h-64 object-cover cursor-pointer"
-                                onClick={() => { setPhotoIndex(0); setIsOpen(true); }}
-                            />
-                        </div>
-                        {images.length > 1 && (
-                            <div className='flex flex-row justify-center w-full mt-2'>
-                                <div className='flex flex-row space-x-2'>
-                                    <img
-                                        key={images[1]}
-                                        src={images[1]}
-                                        alt={`Portfolio image ${images[1]}`}
-                                        className="project-image w-1/2 h-32 object-cover cursor-pointer"
-                                        onClick={() => { setPhotoIndex(1); setIsOpen(true); }}
-                                    />
-                                    <img
-                                        key={images[2]}
-                                        src={images[2]}
-                                        alt={`Portfolio image ${images[2]}`}
-                                        className="project-image w-1/2 h-32 object-cover cursor-pointer"
-                                        onClick={() => { setPhotoIndex(2); setIsOpen(true); }}
-                                    />
-                                </div>
-                            </div>
-                        )}
-                        <div className='flex flex-row justify-center mt-2'>
-                            {images.length > 3 ? (
-                                <span className='text-md cursor-pointer text-blue-600 hover:underline' onClick={() => { setPhotoIndex(3); setIsOpen(true); }}>View {images.length - 3} more images</span>
-                            ) : (
-                                <span className='text-md'></span>
-                            )}
-                        </div>
-                    </div>
-                    <div className="flex flex-col justify-start w-1/2">
-                        <h2 className="thq-heading-2 mb-4">{title}</h2>
-                        <p className="text-lg">{description}</p>
-                    </div>
-                </div>
-            )}
+            </div>
             {isOpen && (
                 <Lightbox
                     mainSrc={images[photoIndex]}
