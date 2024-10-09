@@ -401,7 +401,8 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
       density: 3300,      
       savePath: "./tmp-images",
       width: 2000,
-      height: 2000
+      height: 2000,
+      saveFilename: req.file.originalname
     };
 
     // Check if tmp-images directory exists, if not create it
@@ -413,50 +414,36 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
       console.log('tmp-images directory already exists');
     }
 
-    
-
     const pdfLoadDoc = await PDFDocument.load(pdfBuffer);
     const pageCount = pdfLoadDoc.getPageCount();
     console.log('page count', pageCount);
 
     const convert = fromBuffer(pdfBuffer, options);
-    // const imageUrls = [];
-
-    // for (let i = 1; i <= pageCount; i++) {
-    //     convert(i, { responseType: "image" })
-    //     .then((resolve) => {
-    //         console.log("Page 1 is now converted as image");
-
-    //         return resolve;
-    //     });
-        
-        
-    // }
     const result = await convert.bulk(-1);
-    console.log(result);
-    console.log(typeof result);
 
-    
-
-    const tempDir = './tmp-images';
     const imageUrls = [];
-    let count = 0;
-    for (const image of result) {
-        const file = new UTFile({
-            name: image.name,
-            buffer: fs.readFileSync(image.path),
-        });
-        const uploadResponse = await utapi.uploadFiles(file, {
-            metadata: { pageNumber: count + 1 },
-            contentDisposition: 'inline',
-        });
-        if (uploadResponse.data) {
-            imageUrls.push(uploadResponse.data.url);
-        } else if (uploadResponse.error) {
-            console.error(`Error uploading file: ${uploadResponse.error.message}`);
-        }
-        count++;
+    for (let i = 0; i < result.length; i++) {
+      const image = result[i];
+      const imagePath = path.join(tmpDir, image.name);
+      
+      // Create a temporary URL for the image
+      const tempUrl = `https://itsmejessicalee.com/api/tmp-images/${image.name}`;
+      
+      // Upload the image using UTApi
+      const uploadedFile = await utapi.uploadFilesFromUrl(tempUrl);
+      console.log("Uploaded file: ", uploadedFile);
+      if (uploadedFile.data) {
+        imageUrls.push(uploadedFile.data.url);
+      } else if (uploadedFile.error) {
+        console.error(`Error uploading file: ${uploadedFile.error.message}`);
+      }
+      
+      // Delete the temporary image file
+      fs.unlinkSync(imagePath);
     }
+
+    // Remove the temporary directory
+    fs.rmdirSync(tmpDir, { recursive: true });
 
     res.json({ imageUrls });
   } catch (error) {
@@ -465,38 +452,16 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
   }
 });
 
-
+// Serve temporary images
+app.use('/api/tmp-images', express.static('./tmp-images'));
 
 app.get('/api/getimages', async (req, res) => {
     try {
-        const tempDir = './tmp-images';
-        const files = await fs.promises.readdir(tempDir);
-        let html = '<div>';
-
-        for (const file of files) {
-            if (file.match(/\.(jpg|jpeg|png|gif)$/i)) {
-                const filePath = path.join(tempDir, file);
-                const stats = await fs.promises.stat(filePath);
-                const fileBuffer = await fs.promises.readFile(filePath);
-                const base64Image = fileBuffer.toString('base64');
-                const mimeType = `image/${path.extname(file).slice(1)}`;
-
-                html += `
-                    <div>
-                        <img src="data:${mimeType};base64,${base64Image}" alt="${file}" />
-                        <p>Name: ${file}</p>
-                        <p>Size: ${stats.size} bytes</p>
-                        <p>Last Modified: ${stats.mtime}</p>
-                    </div>
-                `;
-            }
-        }
-
-        html += '</div>';
-        res.send(html);
+        const imageUrls = await utapi.getFiles();
+        res.json(imageUrls);
     } catch (error) {
         console.error('Error getting images:', error);
-        res.status(500).send('<p>Error getting images: ' + error.message + '</p>');
+        res.status(500).json({ error: 'Error getting images: ' + error.message });
     }
 });
 
