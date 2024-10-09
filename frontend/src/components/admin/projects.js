@@ -6,12 +6,10 @@ import { FaUpload, FaTimes, FaFilePdf } from 'react-icons/fa';
 import { pdfjs } from 'react-pdf';
 import ReactDOM from 'react-dom';
 
-import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
-pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-// Initialize pdfjs worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.mjs';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
 
 // Generate the UploadDropzone and UploadButton components
 const UploadDropzone = generateUploadDropzone();
