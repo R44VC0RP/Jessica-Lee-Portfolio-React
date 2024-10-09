@@ -440,10 +440,12 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
 
     const tempDir = './tmp-images';
     const imageUrls = [];
+    let count = 0;
     for (const image of result) {
-        const imageUrl = await utapi.uploadFiles([image.path]);
+        const imageUrl = await utapi.uploadFiles(new File([image], image.name + count + '.png', { type: 'image/png' }));
         imageUrls.push(imageUrl);
         fs.unlinkSync(image.path);
+        count++;
     }
 
     res.json({ imageUrls });
