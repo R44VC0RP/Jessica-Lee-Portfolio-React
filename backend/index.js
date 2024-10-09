@@ -440,19 +440,11 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
 
     const tempDir = './tmp-images';
     const imageUrls = [];
-    fs.readdir(tempDir, (err, files) => {
-      if (err) {
-        console.error('Error reading temp directory:', err);
-        return;
-      }
-      console.log('Images in temp directory:');
-      files.forEach(file => {
-        if (path.extname(file).toLowerCase() === '.png') {
-          utapi.uploadFiles([file]);
-          imageUrls.push(file);
-        }
-      });
-    });
+    for (const image of result) {
+        const imageUrl = await utapi.uploadFiles([image.path]);
+        imageUrls.push(imageUrl);
+        fs.unlinkSync(image.path);
+    }
 
     res.json({ imageUrls });
   } catch (error) {
