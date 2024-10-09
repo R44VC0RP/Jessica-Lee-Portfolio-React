@@ -406,6 +406,15 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
       height: 2000
     };
 
+    // Check if tmp-images directory exists, if not create it
+    const tmpDir = './tmp-images';
+    if (!fs.existsSync(tmpDir)) {
+      fs.mkdirSync(tmpDir, { recursive: true });
+      console.log('Created tmp-images directory');
+    } else {
+      console.log('tmp-images directory already exists');
+    }
+
     
 
     const pdfLoadDoc = await PDFDocument.load(pdfBuffer);
