@@ -397,13 +397,7 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     }
 
     const pdfBuffer = req.file.buffer;
-    const options = {
-      density: 3300,      
-      savePath: "./tmp-images",
-      width: 2000,
-      height: 2000,
-      saveFilename: req.file.originalname
-    };
+    
 
     // Check if tmp-images directory exists, if not create it
     const tmpDir = './tmp-images';
@@ -422,7 +416,13 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     console.log('page count', pageCount);
     console.log('width', width);
     console.log('height', height);
-
+    const options = {
+        density: 3300,      
+        savePath: "./tmp-images",
+        width: width * 3,
+        height: height * 3,
+        saveFilename: req.file.originalname
+      };
     const convert = fromBuffer(pdfBuffer, options);
     const result = await convert.bulk(-1);
 
