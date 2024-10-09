@@ -17,7 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
-const { PDFDocument } = require('pdf-lib');
+const { PDFDocument, PDFPage } = require('pdf-lib');
 
 const { UTApi, UTFile } = require("uploadthing/server");
 const { fromBuffer } = require('pdf2pic');
@@ -416,7 +416,12 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
 
     const pdfLoadDoc = await PDFDocument.load(pdfBuffer);
     const pageCount = pdfLoadDoc.getPageCount();
+    const page = pdfLoadDoc.getPage(0);
+    const width = page.getWidth();
+    const height = page.getHeight();
     console.log('page count', pageCount);
+    console.log('width', width);
+    console.log('height', height);
 
     const convert = fromBuffer(pdfBuffer, options);
     const result = await convert.bulk(-1);
