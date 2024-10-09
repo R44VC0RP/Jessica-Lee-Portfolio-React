@@ -412,14 +412,22 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
 
     // Convert all pages
     var pages = 1;
-    convert(pageToConvert, { responseType: "buffer" }).then(async (resolved) => {
+
+    
+    const convertPages = async () => {
+        const resolved = await convert(pageToConvert);
         console.log("Page " + pages + " converted");
-        pages++;
         const upload = await utapi.uploadFiles(
-            new File([resolved], `page_${pages}.jpg`, { type: 'image/png' })
+            new File([resolved[0].buffer], `page_${pages}.png`, { type: 'image/png' })
         );
-        imageUrls.push(upload.data.url);
-    });
+        imageUrls.push(upload[0].url);
+        pages++;
+    };
+
+    // Convert all pages
+    while (pages <= resolved.length) {
+        await convertPages();
+    }
 
     res.json({ imageUrls });
   } catch (error) {
