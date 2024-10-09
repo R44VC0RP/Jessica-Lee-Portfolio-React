@@ -432,9 +432,9 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
         
         
     // }
-
-    console.log(convert.bulk(-1));
-    console.log(typeof convert.bulk(-1));
+    const result = await convert.bulk(-1);
+    console.log(result);
+    console.log(typeof result);
 
     
 
@@ -452,7 +452,7 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
       });
     });
 
-    res.json({ imageUrls });
+    res.json({ "imageUrls": true });
   } catch (error) {
     console.error('Error processing PDF:', error);
     res.status(500).json({ error: 'Error processing PDF: ' + error.message });
