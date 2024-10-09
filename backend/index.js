@@ -17,6 +17,10 @@ const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
+const { PDFDocument } = require('pdf-lib');
+const sharp = require('sharp');
+const { UTApi } = require("uploadthing/server");
+
 app.use(express.json());
 
 
@@ -382,6 +386,46 @@ app.post('/api/email/submit', async (req, res) => {
     } // Add this closing brace to properly close the try block
 }); // Add this closing parenthesis to properly close the app.post function
 
+// Initialize UploadThing API
+const utapi = new UTApi();
+
+app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No PDF file uploaded' });
+    }
+
+    const pdfBuffer = req.file.buffer;
+    const pdfDoc = await PDFDocument.load(pdfBuffer);
+    const pageCount = pdfDoc.getPageCount();
+
+    const imageUrls = [];
+
+    for (let i = 0; i < pageCount; i++) {
+      const page = pdfDoc.getPages()[i];
+      const pngImage = await page.exportAsPNG({ scale: 2 });
+
+      // Convert PNG to JPEG
+      const jpegBuffer = await sharp(pngImage)
+        .jpeg({ quality: 80 })
+        .toBuffer();
+
+      // Upload the JPEG using UploadThing
+      const uploadResponse = await utapi.uploadFiles(
+        new File([jpegBuffer], `page_${i + 1}.jpg`, { type: 'image/jpeg' })
+      );
+
+      if (uploadResponse.data) {
+        imageUrls.push(uploadResponse.data.url);
+      }
+    }
+
+    res.json({ imageUrls });
+  } catch (error) {
+    console.error('Error processing PDF:', error);
+    res.status(500).json({ error: 'Error processing PDF' });
+  }
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
