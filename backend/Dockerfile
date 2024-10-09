@@ -1,5 +1,5 @@
 # Fetching the latest node image on alpine linux
-FROM node:16
+FROM node:20
 
 # Setting up the work directory
 WORKDIR /app
