@@ -439,6 +439,7 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     
 
     const tempDir = './tmp-images';
+    const imageUrls = [];
     fs.readdir(tempDir, (err, files) => {
       if (err) {
         console.error('Error reading temp directory:', err);
@@ -447,12 +448,13 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
       console.log('Images in temp directory:');
       files.forEach(file => {
         if (path.extname(file).toLowerCase() === '.png') {
-          console.log(file);
+          utapi.uploadFiles([file]);
+          imageUrls.push(file);
         }
       });
     });
 
-    res.json({ "imageUrls": true });
+    res.json({ imageUrls });
   } catch (error) {
     console.error('Error processing PDF:', error);
     res.status(500).json({ error: 'Error processing PDF: ' + error.message });
