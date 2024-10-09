@@ -56,8 +56,22 @@ const Projects = () => {
     };
 
     const handleSubmit = async () => {
-        if (projectName === '' || projectDescription === '' || files.length === 0) {
-            alert('Please fill out the form and upload at least one file.');
+        const errors = [];
+        if (projectName.trim() === '') {
+            errors.push('Project name');
+        }
+        if (projectDescription.trim() === '') {
+            errors.push('Project description');
+        }
+        if (files.length === 0) {
+            errors.push('At least one image');
+        }
+        if (projectDate.trim() === '') {
+            errors.push('Project date');
+        }
+
+        if (errors.length > 0) {
+            alert(`Please provide the following:\n${errors.join('\n')}`);
             return;
         }
 
@@ -92,8 +106,22 @@ const Projects = () => {
     };
 
     const handleEditSubmit = async () => {
-        if (projectName === '' || projectDescription === '' || files.length === 0) {
-            alert('Please fill out the form and upload at least one file.');
+        const errors = [];
+        if (projectName.trim() === '') {
+            errors.push('Project name');
+        }
+        if (projectDescription.trim() === '') {
+            errors.push('Project description');
+        }
+        if (files.length === 0) {
+            errors.push('At least one image');
+        }
+        if (projectDate.trim() === '') {
+            errors.push('Project date');
+        }
+
+        if (errors.length > 0) {
+            alert(`Please provide the following:\n${errors.join('\n')}`);
             return;
         }
 
