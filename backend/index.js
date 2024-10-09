@@ -20,6 +20,7 @@ const axios = require('axios');
 const { PDFDocument } = require('pdf-lib');
 const sharp = require('sharp');
 const { UTApi } = require("uploadthing/server");
+const { createCanvas } = require('canvas');
 
 app.use(express.json());
 
@@ -397,16 +398,26 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
 
     const pdfBuffer = req.file.buffer;
     const pdfDoc = await PDFDocument.load(pdfBuffer);
-    const pageCount = pdfDoc.getPageCount();
-
     const imageUrls = [];
 
-    for (let i = 0; i < pageCount; i++) {
-      const page = pdfDoc.getPages()[i];
-      const pngImage = await page.exportAsPNG({ scale: 2 });
+    for (let i = 0; i < pdfDoc.getPageCount(); i++) {
+      const page = pdfDoc.getPage(i);
+      const { width, height } = page.getSize();
+      const scale = 2;
+      const canvas = createCanvas(width * scale, height * scale);
+      const context = canvas.getContext('2d');
+
+      // Render the PDF page to the canvas
+      const pngImage = await page.render({
+        canvas: context,
+        viewport: page.getViewport({ scale }),
+      }).promise;
+
+      // Convert canvas to buffer
+      const pngBuffer = canvas.toBuffer('image/png');
 
       // Convert PNG to JPEG
-      const jpegBuffer = await sharp(pngImage)
+      const jpegBuffer = await sharp(pngBuffer)
         .jpeg({ quality: 80 })
         .toBuffer();
 
@@ -423,7 +434,7 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     res.json({ imageUrls });
   } catch (error) {
     console.error('Error processing PDF:', error);
-    res.status(500).json({ error: 'Error processing PDF' });
+    res.status(500).json({ error: 'Error processing PDF: ' + error.message });
   }
 });
 
