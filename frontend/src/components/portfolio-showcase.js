@@ -68,9 +68,9 @@ const PortfolioShowcase = () => {
       </div>
       {isOpen && (
         <Lightbox
-          mainSrc={projects[photoIndex].p_image}
-          nextSrc={projects[(photoIndex + 1) % projects.length].p_image}
-          prevSrc={projects[(photoIndex + projects.length - 1) % projects.length].p_image}
+          mainSrc={projects[photoIndex].p_images[0]}
+          nextSrc={projects[(photoIndex + 1) % projects.length].p_images[0]}
+          prevSrc={projects[(photoIndex + projects.length - 1) % projects.length].p_images[0]}
           onCloseRequest={() => setIsOpen(false)}
           onMovePrevRequest={() =>
             setPhotoIndex((photoIndex + projects.length - 1) % projects.length)
