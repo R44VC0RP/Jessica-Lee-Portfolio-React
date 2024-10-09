@@ -398,10 +398,8 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
 
     const pdfBuffer = req.file.buffer;
     const options = {
-      density: 300,
-      saveFilename: "untitled",
+      density: 3300,      
       savePath: "./tmp-images",
-      format: "png",
       width: 2000,
       height: 2000
     };
@@ -422,18 +420,21 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     console.log('page count', pageCount);
 
     const convert = fromBuffer(pdfBuffer, options);
-    const imageUrls = [];
+    // const imageUrls = [];
 
-    for (let i = 1; i <= pageCount; i++) {
-        convert(i, { responseType: "image" })
-        .then((resolve) => {
-            console.log("Page 1 is now converted as image");
+    // for (let i = 1; i <= pageCount; i++) {
+    //     convert(i, { responseType: "image" })
+    //     .then((resolve) => {
+    //         console.log("Page 1 is now converted as image");
 
-            return resolve;
-        });
+    //         return resolve;
+    //     });
         
         
-    }
+    // }
+
+    console.log(convert.bulk(-1));
+    console.log(typeof convert.bulk(-1));
 
     
 
