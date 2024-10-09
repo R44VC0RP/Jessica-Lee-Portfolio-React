@@ -30,7 +30,7 @@ const PortfolioHighlight = ({ title, description, images }) => {
     }, [isMobile]);
 
     return (
-        <div ref={sectionRef} className="flex flex-col md:flex-row p-4 w-full">
+        <div ref={sectionRef} className="flex flex-col md:flex-row p-6 md:p-8 w-full">
             <div className="w-full md:w-1/2 flex flex-col items-center">
                 {images.map((image, index) => (
                     <div key={index} className="w-full mb-4">
@@ -43,10 +43,10 @@ const PortfolioHighlight = ({ title, description, images }) => {
                     </div>
                 ))}
             </div>
-            <div ref={infoRef} className="w-full md:w-1/2 md:pl-4">
-                <div className="sticky top-0">
-                    <h2 className="text-2xl font-bold mb-4">{title}</h2>
-                    <p className="text-lg">{description}</p>
+            <div ref={infoRef} className="w-full md:w-1/2 md:pl-8">
+                <div className="sticky top-0 pt-6 md:pt-8">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-tight">{title}</h2>
+                    <p className="text-base sm:text-lg md:text-xl leading-relaxed">{description}</p>
                 </div>
             </div>
             {isOpen && (
