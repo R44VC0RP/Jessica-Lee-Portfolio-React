@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import ProjectItem from '../project-item';
 import axios from 'axios';
-import { UploadButton, UploadDropzone } from "@uploadthing/react";
-import { FaUpload, FaTimes } from 'react-icons/fa';
+import { UploadButton, UploadDropzone, uploadFiles } from "@uploadthing/react";
+import { FaUpload, FaTimes, FaFilePdf } from 'react-icons/fa';
+import { pdfjs } from 'react-pdf';
+
+// Initialize pdfjs worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const Projects = () => {
     const [projectCount, setProjectCount] = useState(0);
@@ -16,6 +20,7 @@ const Projects = () => {
     const [editProjectId, setEditProjectId] = useState(null);
     const [tags, setTags] = useState([]);
     const [currentTag, setCurrentTag] = useState('');
+    const [pdfFile, setPdfFile] = useState(null);
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -196,6 +201,38 @@ const Projects = () => {
         setFiles(newFiles);
     };
 
+    const handlePdfUpload = async (event) => {
+        const file = event.target.files[0];
+        if (file && file.type === 'application/pdf') {
+            setPdfFile(file);
+            const pdfDocument = await pdfjs.getDocument({ url: URL.createObjectURL(file) }).promise;
+            const totalPages = pdfDocument.numPages;
+
+            for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+                const page = await pdfDocument.getPage(pageNum);
+                const scale = 1.5;
+                const viewport = page.getViewport({ scale });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                await page.render({ canvasContext: context, viewport }).promise;
+
+                const imageDataUrl = canvas.toDataURL('image/png');
+                const response = await fetch(imageDataUrl);
+                const blob = await response.blob();
+                const imageFile = new File([blob], `page_${pageNum}.png`, { type: 'image/png' });
+
+                // Use the UploadThing client to upload the image
+                const uploadResponse = await uploadFiles([imageFile], 'imageUploader');
+                handleUploadComplete(uploadResponse);
+            }
+        } else {
+            alert('Please upload a valid PDF file.');
+        }
+    };
+
     return (
         <div className="flex flex-col mb-4 w-full" id="projects_hud">
             <div className="flex flex-row items-center w-full justify-between">
@@ -236,11 +273,29 @@ const Projects = () => {
                             value={projectDate}
                             onChange={(e) => setProjectDate(e.target.value)}
                         />
-                        <UploadDropzone
-                            endpoint="imageUploader"
-                            onClientUploadComplete={handleUploadComplete}
-                            className=""
-                        />
+                        <div className="flex items-center space-x-4 mb-4">
+                            <UploadDropzone
+                                endpoint="imageUploader"
+                                onClientUploadComplete={handleUploadComplete}
+                                className="flex-1"
+                            />
+                            <div className="relative">
+                                <input
+                                    type="file"
+                                    accept=".pdf"
+                                    onChange={handlePdfUpload}
+                                    className="hidden"
+                                    id="pdfUpload"
+                                />
+                                <label
+                                    htmlFor="pdfUpload"
+                                    className="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors"
+                                >
+                                    <FaFilePdf className="mr-2" />
+                                    Upload PDF
+                                </label>
+                            </div>
+                        </div>
                         <div className="flex flex-wrap">
                             {files.map((file, index) => (
                                 <div key={index} className="relative w-24 h-24 m-2 border border-gray-400 rounded-lg">

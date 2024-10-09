@@ -54,6 +54,7 @@ const Portfolio = (props) => {
       <MainNavbar></MainNavbar>
       <PortfolioShowcase></PortfolioShowcase>
       <PortfolioAll></PortfolioAll>
+      <div className="w-[90%] mx-auto">
       {projects.reverse().map((project, index) => (
         <PortfolioHighlight
           key={index}
@@ -62,6 +63,7 @@ const Portfolio = (props) => {
           images={project.p_images}
         />
       ))}
+      </div>
       {/* <div id="contact_form" className="portfolio-contact">
         <PrimaryContact contactID="primaryContactSection" ></PrimaryContact>
       </div> */}
