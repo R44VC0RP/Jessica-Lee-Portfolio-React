@@ -5,6 +5,7 @@ import { generateUploadDropzone, generateUploadButton } from "@uploadthing/react
 import { FaUpload, FaTimes, FaFilePdf } from 'react-icons/fa';
 import { pdfjs } from 'react-pdf';
 import ReactDOM from 'react-dom';
+import { uploadFiles } from './uploadthing'; // Adjust the import path as needed
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
@@ -228,25 +229,13 @@ const Projects = () => {
                 const blob = await response.blob();
                 const imageFile = new File([blob], `page_${pageNum}.png`, { type: 'image/png' });
 
-                // Use the UploadButton to upload the image
-                const uploadButton = document.createElement('button');
-                uploadButton.style.display = 'none';
-                document.body.appendChild(uploadButton);
-                
-                const UploadButtonComponent = UploadButton({
-                    endpoint: "imageUploader",
-                    onClientUploadComplete: (res) => {
-                        console.log("Upload Completed", res);
-                        handleUploadComplete(res);
-                    },
-                    onUploadError: (error) => {
-                        console.error("Upload Error", error);
-                    },
-                });
-
-                ReactDOM.render(UploadButtonComponent, uploadButton);
-                uploadButton.click();
-                document.body.removeChild(uploadButton);
+                try {
+                    const uploadResponse = await uploadFiles([imageFile], "imageUploader");
+                    console.log("Upload Completed for page", pageNum, uploadResponse);
+                    handleUploadComplete(uploadResponse);
+                } catch (error) {
+                    console.error("Upload Error for page", pageNum, error);
+                }
             }
         } else {
             alert('Please upload a valid PDF file.');
