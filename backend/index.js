@@ -415,7 +415,7 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
 
     
     const convertPages = async () => {
-        const resolved = await convert(pageToConvert);
+        const resolved = await convert(pageToConvert, { responseType: "buffer" });
         console.log("Page " + pages + " converted");
         const upload = await utapi.uploadFiles(
             new File([resolved[0].buffer], `page_${pages}.png`, { type: 'image/png' })
@@ -425,7 +425,7 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     };
 
     // Convert all pages
-    while (pages <= resolved.length) {
+    while (pages <= 1) {
         await convertPages();
     }
 
