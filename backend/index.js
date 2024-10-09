@@ -406,7 +406,7 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
       height: 2000
     };
 
-    const convert = fromBuffer(pdfBuffer, options);
+    const convert = fromBuffer(pdfBuffer, options).bulk(-1, { responseType: "buffer" });
     const imageUrls = [];
     const pageToConvert = -1;
 
