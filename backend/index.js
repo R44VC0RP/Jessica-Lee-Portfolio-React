@@ -18,7 +18,7 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const axios = require('axios');
 const { PDFDocument } = require('pdf-lib');
-const sharp = require('sharp');
+
 const { UTApi } = require("uploadthing/server");
 const { fromBuffer } = require('pdf2pic');
 
