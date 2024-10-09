@@ -174,7 +174,7 @@ const Projects = () => {
                 <span className="admin-management-text2 mr-4">You have {projectCount} Projects</span>
                 <button className="main-button" onClick={() => setIsModalOpen(true)}>Add Project</button>
             </div>
-            {projects.map((project) => (
+            {projects.slice().reverse().map((project) => (
                 <ProjectItem 
                     key={project.p_id} 
                     rootClassName="project-item-root-class-name w-full" 
