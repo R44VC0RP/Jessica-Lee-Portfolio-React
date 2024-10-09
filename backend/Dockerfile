@@ -10,6 +10,7 @@ COPY package*.json ./
 RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     libgl1-mesa-glx \
+    graphicsmagick \
     && rm -rf /var/lib/apt/lists/*
 
 RUN npm install
@@ -20,4 +21,3 @@ COPY . .
 EXPOSE 4000
 
 CMD ["npm", "run", "dev"]
-
