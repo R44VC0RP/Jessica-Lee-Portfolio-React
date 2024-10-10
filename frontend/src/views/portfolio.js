@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 
 import { Helmet } from 'react-helmet'
 import { jellyTriangle } from 'ldrs'
@@ -8,30 +8,61 @@ jellyTriangle.register()
 
 import MainNavbar from '../components/main-navbar'
 import PortfolioShowcase from '../components/portfolio-showcase'
-import PortfolioAll from '../components/portfolio-all'
-import PrimaryContact from '../components/primary-contact'
-import Footer from '../components/footer'
 import PortfolioHighlight from '../components/portfolio-highlight'
-import ContactMe from '../components/contactme'
+import Footer from '../components/footer'
 import './portfolio.css'
 
 const Portfolio = (props) => {
-  const [projects, setProjects] = useState([]);
+  const [showcaseProjects, setShowcaseProjects] = useState([]);
+  const [allProjects, setAllProjects] = useState([]);
+  const [visibleProjects, setVisibleProjects] = useState(3);
+  const [loading, setLoading] = useState(false);
+
+  const fetchShowcaseProjects = useCallback(async () => {
+    try {
+      const response = await fetch('/api/projects/newest');
+      const data = await response.json();
+      setShowcaseProjects(data);
+    } catch (error) {
+      console.error('Error fetching showcase projects:', error);
+    }
+  }, []);
+
+  const fetchAllProjects = useCallback(async () => {
+    try {
+      const response = await fetch('/api/projects/getall');
+      const data = await response.json();
+      setAllProjects(data.reverse());
+    } catch (error) {
+      console.error('Error fetching all projects:', error);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await fetch('/api/projects/getall');
-        const data = await response.json();
-        console.log(data)
-        setProjects(data);
-      } catch (error) {
-        console.error('Error fetching projects:', error);
+    fetchShowcaseProjects();
+    fetchAllProjects();
+  }, [fetchShowcaseProjects, fetchAllProjects]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) {
+        return;
       }
+      loadMoreProjects();
     };
 
-    fetchProjects();
-  }, []);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]);
+
+  const loadMoreProjects = () => {
+    if (visibleProjects >= allProjects.length) return;
+    setLoading(true);
+    setTimeout(() => {
+      setVisibleProjects(prevVisible => prevVisible + 3);
+      setLoading(false);
+    }, 1000);
+  };
 
   return (
     <div className="portfolio-container">
@@ -52,8 +83,7 @@ const Portfolio = (props) => {
         />
       </Helmet>
       <MainNavbar></MainNavbar>
-      <PortfolioShowcase></PortfolioShowcase>
-      {/* <PortfolioAll></PortfolioAll> */}
+      <PortfolioShowcase projects={showcaseProjects}></PortfolioShowcase>
       <div className="portfolio-all-max-width">
         <div className="portfolio-all-section-title">
           <h2 className="portfolio-all-text thq-heading-2">Project Portfolio</h2>
@@ -63,15 +93,24 @@ const Portfolio = (props) => {
         </div>
       </div>
       <div className="w-[90%] mx-auto">
-      {projects.reverse().map((project, index) => (
-        <PortfolioHighlight
-          key={index}
-          title={project.p_title}
-          description={project.p_description}
-          images={project.p_images}
-        />
-      ))}
+        {allProjects.slice(0, visibleProjects).map((project, index) => (
+          <PortfolioHighlight
+            key={project.p_id}
+            title={project.p_title}
+            description={project.p_description}
+            images={project.p_images}
+          />
+        ))}
       </div>
+      {loading && (
+        <div className="flex justify-center items-center py-4">
+          <l-jelly-triangle
+            size="40"
+            speed="1.75"
+            color="black"
+          ></l-jelly-triangle>
+        </div>
+      )}
       {/* <div id="contact_form" className="portfolio-contact">
         <PrimaryContact contactID="primaryContactSection" ></PrimaryContact>
       </div> */}
