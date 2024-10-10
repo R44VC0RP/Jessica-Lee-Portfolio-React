@@ -24,6 +24,7 @@ const Projects = () => {
     const [pdfFile, setPdfFile] = useState(null);
     const [isPdfProcessing, setIsPdfProcessing] = useState(false);
     const token = localStorage.getItem('token');
+    const [isOptimizing, setIsOptimizing] = useState(false);
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -203,6 +204,20 @@ const Projects = () => {
         setFiles(newFiles);
     };
 
+    const handleOptimizeImages = async () => {
+        try {
+            setIsOptimizing(true);
+            const response = await axios.get('/api/optimize-project-images');
+            console.log('Images optimized successfully:', response.data);
+            alert('Images have been optimized and updated.');
+            setIsOptimizing(false);
+        } catch (error) {
+            console.error('Error optimizing images:', error);
+            alert('Error optimizing images. Please try again.');
+            setIsOptimizing(false);
+        }
+    };
+
     const handlePdfUpload = async (event) => {
         console.log("handlePdfUpload called", event.target.files);
         const file = event.target.files[0];
@@ -252,6 +267,16 @@ const Projects = () => {
             <div className="flex flex-row items-center w-full justify-between">
                 <span className="admin-management-text2 mr-4">You have {projectCount} Projects</span>
                 <button className="main-button" onClick={() => setIsModalOpen(true)}>Add Project</button>
+                <button className="main-button" onClick={handleOptimizeImages} disabled={isOptimizing}>
+                    {isOptimizing ? (
+                        <div className="flex items-center">
+                            <FaSpinner className="animate-spin mr-2" />
+                            Optimizing...
+                        </div>
+                    ) : (
+                        'Optimize Images'
+                    )}
+                </button>
             </div>
             {projects.slice().reverse().map((project) => (
                 <ProjectItem
