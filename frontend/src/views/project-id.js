@@ -26,7 +26,7 @@ const ProjectId = () => {
         setProject(response.data);
         
         // Generate OG image
-        const ogImage = await generateOGImage(response.data.p_title);
+        const ogImage = generateOGImage(response.data.p_title);
         setOgImageUrl(ogImage);
       } catch (error) {
         console.error('Error fetching project:', error);
@@ -110,7 +110,7 @@ const ProjectId = () => {
         </div>
 
         {/* Add OG Image Preview */}
-        <div className="mt-8">
+        <div className="mt-8 container mx-auto px-4 max-w-4xl">
           <h2 className="text-2xl font-bold mb-4">OG Image Preview</h2>
           {ogImageUrl ? (
             <img 
