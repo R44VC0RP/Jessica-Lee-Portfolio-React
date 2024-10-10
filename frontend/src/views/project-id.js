@@ -110,19 +110,7 @@ const ProjectId = () => {
           </div>
         </div>
 
-        {/* Add OG Image Preview */}
-        <div className="mt-8 container mx-auto px-4 max-w-4xl">
-          <h2 className="text-2xl font-bold mb-4">OG Image Preview</h2>
-          {ogImageUrl ? (
-            <img 
-              src={ogImageUrl} 
-              alt="OG Image Preview" 
-              className="w-full max-w-2xl mx-auto rounded-lg shadow-lg"
-            />
-          ) : (
-            <p className="text-gray-600">OG Image is being generated...</p>
-          )}
-        </div>
+        
       </div>
 
       <Footer />
