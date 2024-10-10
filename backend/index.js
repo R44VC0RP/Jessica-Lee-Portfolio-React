@@ -519,18 +519,19 @@ app.post('/api/opengraph/generate', async (req, res) => {
         const params = { title, description: newDescription, imagePath };
         
         const imageBuffer = await GenerateImage(params);
-        
-        // Set the appropriate headers for image response
-        res.set('Content-Type', 'image/png');
-        res.set('Content-Disposition', 'inline; filename="opengraph.png"');
-        
+        const og_uuid = uuidv4();
+        const imagePathToSave = path.join(__dirname, 'public', 'images', og_uuid + ".png"); // Specify the path where you want to save the image
+        fs.writeFileSync(imagePathToSave, imageBuffer); // Save the image buffer to the specified path
+
         // Send the image buffer as the response
-        res.send(imageBuffer);
+        res.send(imagePathToSave);
     } catch (error) {
         console.error('Error generating OpenGraph image:', error);
         res.status(500).json({ error: 'Error generating OpenGraph image: ' + error.message });
     }
 });
+
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

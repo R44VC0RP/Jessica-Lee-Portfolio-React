@@ -30,11 +30,10 @@ const ProjectId = () => {
           title: response.data.p_title,
           description: response.data.p_description,
           imagePath: response.data.p_images[0]
-        }, {
-          responseType: 'blob'
         });
         
-        const ogImageUrl = URL.createObjectURL(ogImageResponse.data);
+        // Update to use the image path returned from the backend
+        const ogImageUrl = `${window.location.origin}/public/images/${ogImageResponse.data.split('/').pop()}`; // Construct the URL
         console.log("OG Image URL: ", ogImageUrl);
         setOgImageUrl(ogImageUrl);
       } catch (error) {
