@@ -34,6 +34,10 @@ const PortfolioShowcase = () => {
     setIsOpen(true);
   };
 
+  const handleProjectClick = (projectId) => {
+    window.location.href = `/projects/${projectId}`;
+  };
+
   return (
     <div className="portfolio-showcase-layout251 thq-section-padding ">
       <div className="portfolio-showcase-max-width thq-section-max-width">
@@ -50,8 +54,7 @@ const PortfolioShowcase = () => {
         <div className="portfolio-showcase-content">
           <div className="portfolio-showcase-row thq-flex-row">
             {projects.map((project, index) => (
-              <a href={`/projects/${project.p_id}`} key={index}>
-                <div key={index} className={`portfolio-showcase-feature${index + 1} thq-flex-column`}>
+                <div key={index} className={`portfolio-showcase-feature${index + 1} thq-flex-column`} onClick={() => handleProjectClick(project.p_id)}>
                   <img
                     alt={project.p_title}
                     src={project.p_images[0]}
@@ -63,7 +66,6 @@ const PortfolioShowcase = () => {
                     <span className="thq-body-small">{project.p_description}</span>
                   </div>
                 </div>
-              </a>
             ))}
           </div>
         </div>
