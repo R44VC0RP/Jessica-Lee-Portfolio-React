@@ -26,7 +26,7 @@ const ProjectId = () => {
         setProject(response.data);
         
         // Generate OG image
-        const ogImage = generateOGImage(response.data.p_title);
+        const ogImage = generateOGImage(response.data.p_title, response.data.p_images[0]);
         setOgImageUrl(ogImage);
       } catch (error) {
         console.error('Error fetching project:', error);
