@@ -79,7 +79,7 @@ const Portfolio = (props) => {
         />
         <meta
           property="og:image"
-          content={`https://itsmejessicalee.com/api/opengraph/image/${showcaseProjects[0].p_id}.png`}
+          
         />
       </Helmet>
       <MainNavbar></MainNavbar>
