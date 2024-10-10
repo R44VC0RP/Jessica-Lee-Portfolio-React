@@ -544,7 +544,11 @@ app.get('/api/opengraph/image/:id', async (req, res) => {
 
         const projectId = req.params.id;
         const project = await Project.findOne({ p_id: projectId });
-        const { title, description, imagePath } = project;
+        const { p_title, p_description, p_images } = project;
+
+        const imagePath = p_images[0];
+        const title = p_title;
+        const description = p_description;
 
         
         const words = description.split(' ');

@@ -47,11 +47,6 @@ const ProjectId = () => {
     fetchProject();
 
     // Cleanup function to revoke the Blob URL when component unmounts
-    return () => {
-      if (ogImageUrl) {
-        URL.revokeObjectURL(ogImageUrl);
-      }
-    };
   }, [id]);
 
   if (isLoading) { // Check loading state
@@ -70,7 +65,8 @@ const ProjectId = () => {
 
   const shareUrl = window.location.href;
   const title = `Check out this project: ${project.p_title}`;
-  setOgImageUrl(`${window.location.origin}/api/opengraph/image/${id}`);
+  const imageURL = `${window.location.origin}/api/opengraph/image/${id}`;
+  
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -79,20 +75,20 @@ const ProjectId = () => {
         <meta name="description" content={project.p_description} />
         <meta property="og:title" content={project.p_title} />
         <meta property="og:description" content={project.p_description} />
-        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image" content={imageURL} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:type" content="website" />
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:title" content={project.p_title} />
         <meta property="twitter:description" content={project.p_description} />
-        <meta property="twitter:image" content={ogImageUrl} />
+        <meta property="twitter:image" content={imageURL} />
         <meta property="twitter:site" content="@itsmejessicalee" />
         <meta property="twitter:creator" content="@itsmejessicalee" />
         <meta property="og:site_name" content="itsmejessicalee.com" />
         <meta property="og:url" content={shareUrl} />
         <meta property="discord:description" content={project.p_description} />
-        <meta property="discord:image" content={ogImageUrl} />
+        <meta property="discord:image" content={imageURL} />
       </Helmet>
 
       <MainNavbar />
