@@ -10,7 +10,7 @@ import {
   FacebookShareButton, TwitterShareButton, LinkedinShareButton, 
   FacebookIcon, TwitterIcon, LinkedinIcon
 } from 'react-share';
-import { generateOGImage } from '../utils/generateOGimage';
+import { generateOGImage } from '../utils/generateOGImage';
 
 const ProjectId = () => {
   const { id } = useParams();
@@ -26,16 +26,21 @@ const ProjectId = () => {
         setProject(response.data);
         
         // Generate OG image
-        if (response.data.p_images && response.data.p_images.length > 0) {
-          const ogImage = await generateOGImage(response.data.p_title, response.data.p_images[0]);
-          setOgImageUrl(ogImage);
-        }
+        const ogImage = await generateOGImage(response.data.p_title);
+        setOgImageUrl(ogImage);
       } catch (error) {
         console.error('Error fetching project:', error);
       }
     };
 
     fetchProject();
+
+    // Cleanup function to revoke the Blob URL when component unmounts
+    return () => {
+      if (ogImageUrl) {
+        URL.revokeObjectURL(ogImageUrl);
+      }
+    };
   }, [id]);
 
   if (!project) {
