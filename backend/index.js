@@ -27,6 +27,7 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
+const tmpDir = './tmp-images';
 
 mongoose.connect(`mongodb+srv://${mongo_user}:${mongo_password}@cluster0.gkeabiy.mongodb.net/itsmejessicalee?retryWrites=true&w=majority&appName=Cluster0`, {
 
@@ -402,7 +403,7 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     
 
     // Check if tmp-images directory exists, if not create it
-    const tmpDir = './tmp-images';
+    
     if (!fs.existsSync(tmpDir)) {
       fs.mkdirSync(tmpDir, { recursive: true });
       console.log('Created tmp-images directory');
@@ -520,7 +521,7 @@ app.post('/api/opengraph/generate', async (req, res) => {
         
         const imageBuffer = await GenerateImage(params);
         const og_uuid = uuidv4();
-        const imagePathToSave = path.join(__dirname, 'public', og_uuid + ".png"); // Specify the path where you want to save the image
+        const imagePathToSave = path.join(__dirname, tmpDir, og_uuid + ".png"); // Specify the path where you want to save the image
         fs.writeFileSync(imagePathToSave, imageBuffer); // Save the image buffer to the specified path
 
         // Send the image buffer as the response
