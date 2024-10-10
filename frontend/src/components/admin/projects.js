@@ -258,9 +258,9 @@ const Projects = () => {
             ))}
 
             {isModalOpen && (
-                <div className="absolute top-0 left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-6 m-4 z-[5000]">
-                    <div className="fixed inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto">
+                <div className="fixed inset-0 flex items-center justify-center z-[5000]">
+                    <div className="absolute inset-0 bg-black opacity-50"></div>
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto relative">
                         <h2 className="text-xl mb-4">Add New Project</h2>
                         <div className="flex flex-col lg:flex-row gap-4">
                             <div className="flex-1">
@@ -384,9 +384,9 @@ const Projects = () => {
             )}
 
             {isEditModalOpen && (
-                <div className="absolute top-0 left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-6 m-4 z-[5000]">
-                    <div className="fixed inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto">
+                <div className="fixed inset-0 flex items-center justify-center z-[5000]">
+                    <div className="absolute inset-0 bg-black opacity-50"></div>
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto relative">
                         <h2 className="text-xl mb-4">Edit Project</h2>
                         <div className="flex flex-col lg:flex-row gap-4">
                             <div className="flex-1">
@@ -505,7 +505,6 @@ const Projects = () => {
                         </div>
                     </div>
                 </div>
-
             )}
         </div>
     );
