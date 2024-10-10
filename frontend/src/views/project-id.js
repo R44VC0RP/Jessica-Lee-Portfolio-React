@@ -25,9 +25,10 @@ const ProjectId = () => {
         const response = await axios.get(`/api/projects/get/${id}`);
         setProject(response.data);
         
-        // Generate OG image
-        const ogImage = generateOGImage(response.data.p_title, response.data.p_images[0]);
-        setOgImageUrl(ogImage);
+        // // Generate OG image
+        // const ogImage = generateOGImage(response.data.p_title, response.data.p_images[0]);
+        // setOgImageUrl(ogImage);
+        setOgImageUrl(response.data.p_images[0]);
       } catch (error) {
         console.error('Error fetching project:', error);
       }
