@@ -33,7 +33,7 @@ const ProjectId = () => {
         });
         
         // Update to use the image path returned from the backend
-        const ogImageUrl = `${window.location.origin}/public/images/${ogImageResponse.data.split('/').pop()}`; // Construct the URL
+        const ogImageUrl = `${window.location.origin}/api/tmp-images/${ogImageResponse.data.split('/').pop()}`; // Construct the URL
         console.log("OG Image URL: ", ogImageUrl);
         setOgImageUrl(ogImageUrl);
       } catch (error) {
