@@ -384,127 +384,122 @@ const Projects = () => {
             )}
 
             {isEditModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-5000 p-4">
-                    <div className="fixed inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full w-[85vw] z-10 max-h-[90vh]">
-                        <h2 className="text-xl mb-4">Edit Project</h2>
-                        <div className="flex flex-col lg:flex-row gap-4">
-                            <div className="flex-1">
+                <div className="absolute top-0 left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-6 m-4 z-50">
+                    <h2 className="text-xl mb-4">Edit Project</h2>
+                    <div className="flex flex-col lg:flex-row gap-4">
+                        <div className="flex-1">
+                            <input
+                                type="text"
+                                className="border p-2 mb-4 w-full"
+                                placeholder="Project Name"
+                                value={projectName}
+                                onChange={(e) => setProjectName(e.target.value)}
+                            />
+                            <textarea
+                                className="border p-2 mb-4 w-full h-32"
+                                placeholder="Project Description"
+                                value={projectDescription}
+                                onChange={(e) => setProjectDescription(e.target.value)}
+                            />
+                            <input
+                                type="date"
+                                className="border p-2 mb-4 w-full"
+                                placeholder="Project Date"
+                                value={projectDate}
+                                onChange={(e) => setProjectDate(e.target.value)}
+                            />
+                            <div className="mb-4">
                                 <input
                                     type="text"
-                                    className="border p-2 mb-4 w-full"
-                                    placeholder="Project Name"
-                                    value={projectName}
-                                    onChange={(e) => setProjectName(e.target.value)}
+                                    className="border p-2 w-full"
+                                    placeholder="Add a tag"
+                                    value={currentTag}
+                                    onChange={(e) => setCurrentTag(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
                                 />
-                                <textarea
-                                    className="border p-2 mb-4 w-full h-32"
-                                    placeholder="Project Description"
-                                    value={projectDescription}
-                                    onChange={(e) => setProjectDescription(e.target.value)}
-                                />
-                                <input
-                                    type="date"
-                                    className="border p-2 mb-4 w-full"
-                                    placeholder="Project Date"
-                                    value={projectDate}
-                                    onChange={(e) => setProjectDate(e.target.value)}
-                                />
-                                <div className="mb-4">
-                                    <input
-                                        type="text"
-                                        className="border p-2 w-full"
-                                        placeholder="Add a tag"
-                                        value={currentTag}
-                                        onChange={(e) => setCurrentTag(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
+                                <button className="main-button mt-2" onClick={handleAddTag}>Add Tag</button>
+                                <div className="flex flex-wrap mt-2">
+                                    {tags.map((tag, index) => (
+                                        <span key={index} className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                            {tag}
+                                            <button onClick={() => handleRemoveTag(tag)} className="ml-2 text-red-500">
+                                                <FaTimes />
+                                            </button>
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex-1">
+                            <div className="mb-4">
+                                <h3 className="text-lg font-semibold mb-2">Upload Files</h3>
+                                <div className="flex flex-col space-y-4">
+                                    <h4 className="text-md font-medium mb-2">Image Upload</h4>
+                                    <UploadDropzone
+                                        endpoint="imageUploader"
+                                        onClientUploadComplete={(res) => {
+                                            console.log("Files: ", res);
+                                            handleUploadComplete(res);
+                                        }}
+                                        onUploadError={(error) => {
+                                            console.error("ERROR!", error);
+                                        }}
                                     />
-                                    <button className="main-button mt-2" onClick={handleAddTag}>Add Tag</button>
-                                    <div className="flex flex-wrap mt-2">
-                                        {tags.map((tag, index) => (
-                                            <span key={index} className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                                                {tag}
-                                                <button onClick={() => handleRemoveTag(tag)} className="ml-2 text-red-500">
-                                                    <FaTimes />
-                                                </button>
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex-1">
-                                <div className="mb-4">
-                                    <h3 className="text-lg font-semibold mb-2">Upload Files</h3>
-                                    <div className="flex flex-col space-y-4">
-                                        <div className="p-4 rounded-lg">
-                                            <h4 className="text-md font-medium mb-2">Image Upload</h4>
-                                            <UploadDropzone
-                                                endpoint="imageUploader"
-                                                onClientUploadComplete={(res) => {
-                                                    console.log("Files: ", res);
-                                                    handleUploadComplete(res);
-                                                }}
-                                                onUploadError={(error) => {
-                                                    console.error("ERROR!", error);
-                                                }}
+                                    
+                                    <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg">
+                                        <h4 className="text-md font-medium mb-2">PDF Upload</h4>
+                                        <p className="text-sm text-gray-600 mb-4">Convert your PDF to images, each page will be an image and added to the project</p>
+                                        <div className="relative">
+                                            <input
+                                                type="file"
+                                                accept=".pdf"
+                                                onChange={handlePdfUpload}
+                                                className="hidden"
+                                                id="pdfUploadEdit"
+                                                disabled={isPdfProcessing}
                                             />
+                                            <label
+                                                htmlFor="pdfUploadEdit"
+                                                className={`flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors ${isPdfProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                            >
+                                                {isPdfProcessing ? (
+                                                    <>
+                                                        <FaSpinner className="mr-2 animate-spin" />
+                                                        Processing PDF...
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <FaFilePdf className="mr-2" />
+                                                        Upload PDF
+                                                    </>
+                                                )}
+                                            </label>
                                         </div>
-                                        
-                                        <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg">
-                                            <h4 className="text-md font-medium mb-2">PDF Upload</h4>
-                                            <p className="text-sm text-gray-600 mb-4">Convert your PDF to images, each page will be an image and added to the project</p>
-                                            <div className="relative">
-                                                <input
-                                                    type="file"
-                                                    accept=".pdf"
-                                                    onChange={handlePdfUpload}
-                                                    className="hidden"
-                                                    id="pdfUploadEdit"
-                                                    disabled={isPdfProcessing}
-                                                />
-                                                <label
-                                                    htmlFor="pdfUploadEdit"
-                                                    className={`flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors ${isPdfProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                >
-                                                    {isPdfProcessing ? (
-                                                        <>
-                                                            <FaSpinner className="mr-2 animate-spin" />
-                                                            Processing PDF...
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <FaFilePdf className="mr-2" />
-                                                            Upload PDF
-                                                        </>
-                                                    )}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="mt-4">
-                                    <h3 className="text-lg font-semibold mb-2">Uploaded Files</h3>
-                                    <div className="flex flex-wrap">
-                                        {files.map((file, index) => (
-                                            <div key={index} className="relative w-24 h-24 m-2 border border-gray-400 rounded-lg overflow-hidden">
-                                                <img src={file.preview} alt={file.name} className="w-full h-full object-contain" />
-                                                <button 
-                                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                                                    onClick={() => handleDeleteFile(index)}
-                                                >
-                                                    <FaTimes />
-                                                </button>
-                                            </div>
-                                        ))}
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="mt-4">
+                                <h3 className="text-lg font-semibold mb-2">Uploaded Files</h3>
+                                <div className="flex flex-wrap">
+                                    {files.map((file, index) => (
+                                        <div key={index} className="relative w-24 h-24 m-2 border border-gray-400 rounded-lg overflow-hidden">
+                                            <img src={file.preview} alt={file.name} className="w-full h-full object-contain" />
+                                            <button 
+                                                className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                                onClick={() => handleDeleteFile(index)}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex justify-between mt-4">
-                            <button className="main-button-bad" onClick={() => setIsEditModalOpen(false)}>Cancel</button>
-                            <button className="main-button" onClick={handleEditSubmit}>Submit</button>
-                        </div>
+                    </div>
+                    <div className="flex justify-between mt-4">
+                        <button className="main-button-bad" onClick={() => setIsEditModalOpen(false)}>Cancel</button>
+                        <button className="main-button" onClick={handleEditSubmit}>Submit</button>
                     </div>
                 </div>
             )}
