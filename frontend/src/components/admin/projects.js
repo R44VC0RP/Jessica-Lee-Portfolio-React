@@ -207,7 +207,11 @@ const Projects = () => {
     const handleOptimizeImages = async () => {
         try {
             setIsOptimizing(true);
-            const response = await axios.get('/api/optimize-project-images');
+            const response = await axios.get('/api/optimize-project-images', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             console.log('Images optimized successfully:', response.data);
             alert('Images have been optimized and updated.');
             setIsOptimizing(false);
@@ -266,17 +270,19 @@ const Projects = () => {
         <div className="flex flex-col mb-4 w-full" id="projects_hud">
             <div className="flex flex-row items-center w-full justify-between">
                 <span className="admin-management-text2 mr-4">You have {projectCount} Projects</span>
-                <button className="main-button" onClick={() => setIsModalOpen(true)}>Add Project</button>
-                <button className="main-button" onClick={handleOptimizeImages} disabled={isOptimizing}>
-                    {isOptimizing ? (
-                        <div className="flex items-center">
-                            <FaSpinner className="animate-spin mr-2" />
-                            Optimizing...
-                        </div>
-                    ) : (
-                        'Optimize Images'
-                    )}
-                </button>
+                <div>
+                    <button className="main-button" onClick={() => setIsModalOpen(true)}>Add Project</button>
+                    <button className="main-button" onClick={handleOptimizeImages} disabled={isOptimizing}>
+                        {isOptimizing ? (
+                            <div className="flex items-center">
+                                <FaSpinner className="animate-spin mr-2" />
+                                Optimizing...
+                            </div>
+                        ) : (
+                            'Optimize Images'
+                        )}
+                    </button>
+                </div>
             </div>
             {projects.slice().reverse().map((project) => (
                 <ProjectItem
