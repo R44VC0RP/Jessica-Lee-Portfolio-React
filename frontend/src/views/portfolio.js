@@ -70,16 +70,16 @@ const Portfolio = (props) => {
         <title>My Portfolio | Jessica Lee</title>
         <meta
           name="description"
-          content="This is the showcase of my life and graphic design portfolio; feel free to contact me if you have any projects or ideas!"
+          content="Welcome to my portfolio! Here you'll find a collection of my work in graphic design."
         />
         <meta property="og:title" content="My Portfolio | Jessica Lee" />
         <meta
           property="og:description"
-          content="This is the showcase of my life and graphic design portfolio; feel free to contact me if you have any projects or ideas!"
+          content="Welcome to my portfolio! Here you'll find a collection of my work in graphic design."
         />
         <meta
           property="og:image"
-          content="https://aheioqhobo.cloudimg.io/v7/_playground-bucket-v2.teleporthq.io_/ace773d9-65a9-44ba-ac39-707201869c92/78be31de-57a6-476c-9018-cdd8ef481839?org_if_sml=1&amp;force_format=original"
+          content={`https://itsmejessicalee.com/api/opengraph/image/${showcaseProjects[0].p_id}.png`}
         />
       </Helmet>
       <MainNavbar></MainNavbar>
