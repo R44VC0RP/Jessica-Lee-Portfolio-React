@@ -242,6 +242,11 @@ const Projects = () => {
         }
     };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setIsEditModalOpen(false);
+    };
+
     return (
         <div className="flex flex-col mb-4 w-full" id="projects_hud">
             <div className="flex flex-row items-center w-full justify-between">
@@ -258,9 +263,9 @@ const Projects = () => {
             ))}
 
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-[5000]">
+                <div className="fixed inset-0 flex items-center justify-center z-[5000]" onClick={closeModal}>
                     <div className="absolute inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto relative">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto relative" onClick={(e) => e.stopPropagation()}>
                         <h2 className="text-xl mb-4">Add New Project</h2>
                         <div className="flex flex-col lg:flex-row gap-4">
                             <div className="flex-1">
@@ -384,9 +389,9 @@ const Projects = () => {
             )}
 
             {isEditModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-[5000]">
+                <div className="fixed inset-0 flex items-center justify-center z-[5000]" onClick={closeModal}>
                     <div className="absolute inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto relative">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto relative" onClick={(e) => e.stopPropagation()}>
                         <h2 className="text-xl mb-4">Edit Project</h2>
                         <div className="flex flex-col lg:flex-row gap-4">
                             <div className="flex-1">
