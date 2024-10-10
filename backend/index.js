@@ -538,6 +538,64 @@ app.post('/api/opengraph/generate', async (req, res) => {
     }
 });
 
+app.get('/api/opengraph/image/:id', async (req, res) => {
+
+    try {
+
+        const projectId = req.params.id;
+        const project = await Project.findOne({ p_id: projectId });
+        const { title, description, imagePath } = project;
+
+        
+        const words = description.split(' ');
+        const lines = [];
+        let currentLine = '';
+
+        words.forEach(word => {
+            if ((currentLine + word).length <= 56) {
+                currentLine += (currentLine ? ' ' : '') + word;
+            } else {
+                lines.push(currentLine);
+                currentLine = word;
+            }
+        });
+
+        if (currentLine) {
+            lines.push(currentLine);
+        }
+
+        console.log("Number of lines: ", lines.length);
+
+        // Restrict the number of lines to 5
+        if (lines.length > 5) {
+            lines.splice(5);
+        }
+
+        // On the 5th element in the array if there is a . do not keep any of the text after the .
+        if (lines.length === 5) {
+            const fifthLine = lines[4];
+            const dotIndex = fifthLine.indexOf('.');
+            if (dotIndex !== -1) {
+                lines[4] = fifthLine.substring(0, dotIndex);
+            }
+        }
+
+        // Ensure each line is no longer than 56 characters
+        const newDescription = lines.map(line => line.substring(0, 56));
+
+        const params = { title, description: newDescription, imagePath };
+        
+        const imageBuffer = await GenerateImage(params);
+        res.set('Content-Type', 'image/png');
+        res.set('Content-Disposition', 'attachment; filename="og_image.png"');
+        res.send(imageBuffer);
+
+    } catch (error) {
+        console.error('Error generating OpenGraph image:', error);
+        res.status(500).json({ error: 'Error generating OpenGraph image: ' + error.message });
+    }
+});
+
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.listen(port, () => {

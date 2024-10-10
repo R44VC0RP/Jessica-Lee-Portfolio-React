@@ -20,6 +20,7 @@ const ProjectId = () => {
   const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
+    setOgImageUrl(`${window.location.origin}/api/opengraph/image/${id}`);
     const fetchProject = async () => {
       try {
         const response = await axios.get(`/api/projects/get/${id}`);
@@ -35,7 +36,7 @@ const ProjectId = () => {
         // Update to use the image path returned from the backend
         const ogImageUrl = `${window.location.origin}/api/tmp-images/${ogImageResponse.data.split('/').pop()}`; // Construct the URL
         console.log("OG Image URL: ", ogImageUrl);
-        setOgImageUrl(ogImageUrl);
+        // setOgImageUrl(ogImageUrl);
         setIsLoading(false); // Set loading to false after data is ready
       } catch (error) {
         console.error('Error fetching project or generating OG image:', error);
