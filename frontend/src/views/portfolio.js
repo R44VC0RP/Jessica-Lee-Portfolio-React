@@ -15,7 +15,7 @@ import './portfolio.css'
 const Portfolio = (props) => {
   const [showcaseProjects, setShowcaseProjects] = useState([]);
   const [allProjects, setAllProjects] = useState([]);
-  const [visibleProjects, setVisibleProjects] = useState(3);
+  const [visibleProjects, setVisibleProjects] = useState(6); // Change initial value to 6
   const [loading, setLoading] = useState(false);
 
   const fetchShowcaseProjects = useCallback(async () => {
@@ -59,7 +59,7 @@ const Portfolio = (props) => {
     if (visibleProjects >= allProjects.length) return;
     setLoading(true);
     setTimeout(() => {
-      setVisibleProjects(prevVisible => prevVisible + 3);
+      setVisibleProjects(prevVisible => prevVisible + 6); // Change to load 6 more projects
       setLoading(false);
     }, 1000);
   };
@@ -102,6 +102,16 @@ const Portfolio = (props) => {
           />
         ))}
       </div>
+      {visibleProjects < allProjects.length && (
+        <div className="flex justify-center items-center py-4">
+          <button
+            onClick={loadMoreProjects}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Load More
+          </button>
+        </div>
+      )}
       {loading && (
         <div className="flex justify-center items-center py-4">
           <l-jelly-triangle
