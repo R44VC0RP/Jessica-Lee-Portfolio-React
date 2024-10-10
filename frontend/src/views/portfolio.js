@@ -53,7 +53,15 @@ const Portfolio = (props) => {
       </Helmet>
       <MainNavbar></MainNavbar>
       <PortfolioShowcase></PortfolioShowcase>
-      <PortfolioAll></PortfolioAll>
+      {/* <PortfolioAll></PortfolioAll> */}
+      <div className="portfolio-all-max-width">
+        <div className="portfolio-all-section-title">
+          <h2 className="portfolio-all-text thq-heading-2">Project Portfolio</h2>
+          <span className="portfolio-all-text1 thq-body-large">
+            Explore a curated collection of my professional projects, showcasing my expertise in design and innovation.
+          </span>
+        </div>
+      </div>
       <div className="w-[90%] mx-auto">
       {projects.reverse().map((project, index) => (
         <PortfolioHighlight
