@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ProjectItem from '../project-item';
 import axios from 'axios';
 import { generateUploadDropzone, generateUploadButton } from "@uploadthing/react";
-import { FaUpload, FaTimes, FaFilePdf, FaSpinner } from 'react-icons/fa';
+import { FaUpload, FaTimes, FaFilePdf, FaSpinner, FaImage } from 'react-icons/fa';
 import { uploadFiles } from './uploadthing'; // Adjust the import path as needed
 
 // Generate the UploadDropzone and UploadButton components
@@ -282,56 +282,70 @@ const Projects = () => {
                             value={projectDate}
                             onChange={(e) => setProjectDate(e.target.value)}
                         />
-                        <div className="flex items-center space-x-4 mb-4">
-                            <UploadDropzone
-                                endpoint="imageUploader"
-                                onClientUploadComplete={(res) => {
-                                    console.log("Files: ", res);
-                                    handleUploadComplete(res);
-                                }}
-                                onUploadError={(error) => {
-                                    console.error("ERROR!", error);
-                                }}
-                            />
-                            <div className="relative">
-                                <input
-                                    type="file"
-                                    accept=".pdf"
-                                    onChange={handlePdfUpload}
-                                    className="hidden"
-                                    id="pdfUpload"
-                                    disabled={isPdfProcessing}
-                                />
-                                <label
-                                    htmlFor="pdfUpload"
-                                    className={`flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors ${isPdfProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                >
-                                    {isPdfProcessing ? (
-                                        <>
-                                            <FaSpinner className="mr-2 animate-spin" />
-                                            Processing...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <FaFilePdf className="mr-2" />
-                                            Upload PDF
-                                        </>
-                                    )}
-                                </label>
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2">Upload Files</h3>
+                            <div className="flex flex-col space-y-4">
+                                <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg">
+                                    <h4 className="text-md font-medium mb-2">Image Upload</h4>
+                                    <UploadDropzone
+                                        endpoint="imageUploader"
+                                        onClientUploadComplete={(res) => {
+                                            console.log("Files: ", res);
+                                            handleUploadComplete(res);
+                                        }}
+                                        onUploadError={(error) => {
+                                            console.error("ERROR!", error);
+                                        }}
+                                    />
+                                </div>
+                                
+                                <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg">
+                                    <h4 className="text-md font-medium mb-2">PDF Upload</h4>
+                                    <div className="relative">
+                                        <input
+                                            type="file"
+                                            accept=".pdf"
+                                            onChange={handlePdfUpload}
+                                            className="hidden"
+                                            id="pdfUpload"
+                                            disabled={isPdfProcessing}
+                                        />
+                                        <label
+                                            htmlFor="pdfUpload"
+                                            className={`flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors ${isPdfProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        >
+                                            {isPdfProcessing ? (
+                                                <>
+                                                    <FaSpinner className="mr-2 animate-spin" />
+                                                    Processing PDF...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <FaFilePdf className="mr-2" />
+                                                    Upload PDF
+                                                </>
+                                            )}
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex flex-wrap">
-                            {files.map((file, index) => (
-                                <div key={index} className="relative w-24 h-24 m-2 border border-gray-400 rounded-lg overflow-hidden">
-                                    <img src={file.preview} alt={file.name} className="w-full h-full object-contain" />
-                                    <button 
-                                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                                        onClick={() => handleDeleteFile(index)}
-                                    >
-                                        &times;
-                                    </button>
-                                </div>
-                            ))}
+
+                        <div className="mt-4">
+                            <h3 className="text-lg font-semibold mb-2">Uploaded Files</h3>
+                            <div className="flex flex-wrap">
+                                {files.map((file, index) => (
+                                    <div key={index} className="relative w-24 h-24 m-2 border border-gray-400 rounded-lg overflow-hidden">
+                                        <img src={file.preview} alt={file.name} className="w-full h-full object-contain" />
+                                        <button 
+                                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                            onClick={() => handleDeleteFile(index)}
+                                        >
+                                            <FaTimes />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                         <div className="mb-4">
                             <input
