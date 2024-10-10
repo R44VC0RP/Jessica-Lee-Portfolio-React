@@ -522,6 +522,12 @@ app.post('/api/opengraph/generate', async (req, res) => {
         const imageBuffer = await GenerateImage(params);
         const og_uuid = uuidv4();
         const imagePathToSave = path.join(__dirname, tmpDir, og_uuid + ".png"); // Specify the path where you want to save the image
+        if (!fs.existsSync(tmpDir)) {
+            fs.mkdirSync(tmpDir, { recursive: true });
+            console.log('Created tmp-images directory');
+        } else {
+            console.log('tmp-images directory already exists');
+        }
         fs.writeFileSync(imagePathToSave, imageBuffer); // Save the image buffer to the specified path
 
         // Send the image buffer as the response
