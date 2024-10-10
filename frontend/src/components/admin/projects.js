@@ -310,7 +310,7 @@ const Projects = () => {
                                 <div className="mb-4">
                                     <h3 className="text-lg font-semibold mb-2">Upload Files</h3>
                                     <div className="flex flex-col space-y-4">
-                                        <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg">
+                                        <div className=" p-4 rounded-lg">
                                             <h4 className="text-md font-medium mb-2">Image Upload</h4>
                                             <UploadDropzone
                                                 endpoint="imageUploader"
@@ -326,6 +326,7 @@ const Projects = () => {
                                         
                                         <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg">
                                             <h4 className="text-md font-medium mb-2">PDF Upload</h4>
+                                            <p className="text-sm text-gray-600 mb-4">Convert your PDF to images, each page will be an image and added to the project</p>
                                             <div className="relative">
                                                 <input
                                                     type="file"
