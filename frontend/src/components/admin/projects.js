@@ -258,7 +258,8 @@ const Projects = () => {
             ))}
 
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto">
+                <div className="fixed inset-0 flex items-center justify-center z-500 overflow-y-auto">
+                    <div className="fixed inset-0 bg-black opacity-50"></div>
                     <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 max-w-4xl z-10">
                         <h2 className="text-xl mb-4">Add New Project</h2>
                         <div className="flex flex-col md:flex-row gap-4">
