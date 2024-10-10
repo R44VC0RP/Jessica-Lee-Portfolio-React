@@ -79,6 +79,16 @@ const ProjectId = () => {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:type" content="website" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:title" content={project.p_title} />
+        <meta property="twitter:description" content={project.p_description} />
+        <meta property="twitter:image" content={ogImageUrl} />
+        <meta property="twitter:site" content="@itsmejessicalee" />
+        <meta property="twitter:creator" content="@itsmejessicalee" />
+        <meta property="og:site_name" content="itsmejessicalee.com" />
+        <meta property="og:url" content={shareUrl} />
+        <meta property="discord:description" content={project.p_description} />
+        <meta property="discord:image" content={ogImageUrl} />
       </Helmet>
 
       <MainNavbar />
