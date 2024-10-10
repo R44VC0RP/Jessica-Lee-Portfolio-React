@@ -673,6 +673,78 @@ app.get('/api/opengraph/image/:id', async (req, res) => {
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+app.get('/api/optimize-project-images', authenticate, async (req, res) => {
+  try {
+    console.log('Starting image optimization process...');
+    const projects = await Project.find();
+    console.log(`Found ${projects.length} projects to process.`);
+    const utapi = new UTApi();
+    let optimizedCount = 0;
+
+    for (const project of projects) {
+      console.log(`Processing project with ID: ${project._id}`);
+      const optimizedImages = [];
+
+      for (const imageUrl of project.p_images) {
+        console.log(`Processing image: ${imageUrl}`);
+        try {
+          // Download the image
+          const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+          const buffer = Buffer.from(response.data, 'binary');
+          console.log(`Downloaded image size: ${buffer.length} bytes`);
+
+          // Check file size
+          if (buffer.length > 500 * 1024) { // 500KB
+            console.log('Image is larger than 500KB, optimizing...');
+            // Resize and optimize the image
+            const optimizedBuffer = await sharp(buffer)
+              .resize(1200, 1200, { fit: 'inside', withoutEnlargement: true })
+              .jpeg({ quality: 80 })
+              .toBuffer();
+            console.log('Image optimized successfully.');
+
+            // Upload the optimized image
+            const uploadedFile = await utapi.uploadFiles(optimizedBuffer);
+            console.log('Image uploaded successfully.');
+
+            if (uploadedFile.data && uploadedFile.data.url) {
+              optimizedImages.push(uploadedFile.data.url);
+              optimizedCount++;
+              console.log(`Optimized image URL: ${uploadedFile.data.url}`);
+
+              // Delete the old file
+              const oldFileKey = imageUrl.split('/').pop();
+              await utapi.deleteFiles(oldFileKey);
+              console.log(`Deleted old image file: ${oldFileKey}`);
+            } else {
+              optimizedImages.push(imageUrl); // Keep the original if upload fails
+              console.log('Upload failed, keeping the original image.');
+            }
+          } else {
+            optimizedImages.push(imageUrl); // Keep the original if it's small enough
+            console.log('Image is small enough, keeping the original.');
+          }
+        } catch (error) {
+          console.error(`Error processing image ${imageUrl}:`, error);
+          optimizedImages.push(imageUrl); // Keep the original if there's an error
+        }
+      }
+
+      // Update the project with optimized images
+      project.p_images = optimizedImages;
+      project.dateUpdated = new Date(); // Update the dateUpdated field
+      await project.save();
+      console.log(`Project with ID: ${project._id} updated successfully.`);
+    }
+
+    res.json({ message: `Optimized ${optimizedCount} images across all projects.` });
+    console.log('Image optimization process completed.');
+  } catch (error) {
+    console.error('Error optimizing project images:', error);
+    res.status(500).json({ error: 'Error optimizing project images: ' + error.message });
+  }
+});
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
