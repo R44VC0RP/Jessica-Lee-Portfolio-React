@@ -10,7 +10,7 @@ import {
   FacebookShareButton, TwitterShareButton, LinkedinShareButton, 
   FacebookIcon, TwitterIcon, LinkedinIcon
 } from 'react-share';
-import { generateOGImage } from '../utils/generateOGImage';
+import { generateOGImage } from '../utils/generateOGimage';
 
 const ProjectId = () => {
   const { id } = useParams();
