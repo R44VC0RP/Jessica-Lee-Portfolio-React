@@ -25,12 +25,19 @@ const ProjectId = () => {
         const response = await axios.get(`/api/projects/get/${id}`);
         setProject(response.data);
         
-        // // Generate OG image
-        // const ogImage = generateOGImage(response.data.p_title, response.data.p_images[0]);
-        // setOgImageUrl(ogImage);
-        setOgImageUrl(response.data.p_images[0]);
+        // Generate OG image
+        const ogImageResponse = await axios.post('/api/opengraph/generate', {
+          title: response.data.p_title,
+          description: response.data.p_description,
+          imagePath: response.data.p_images[0]
+        }, {
+          responseType: 'blob'
+        });
+        
+        const ogImageUrl = URL.createObjectURL(ogImageResponse.data);
+        setOgImageUrl(ogImageUrl);
       } catch (error) {
-        console.error('Error fetching project:', error);
+        console.error('Error fetching project or generating OG image:', error);
       }
     };
 

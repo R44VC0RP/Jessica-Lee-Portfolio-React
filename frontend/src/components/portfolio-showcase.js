@@ -50,18 +50,20 @@ const PortfolioShowcase = () => {
         <div className="portfolio-showcase-content">
           <div className="portfolio-showcase-row thq-flex-row">
             {projects.map((project, index) => (
-              <div key={index} className={`portfolio-showcase-feature${index + 1} thq-flex-column`}>
-                <img
-                  alt={project.p_title}
-                  src={project.p_images[0]}
-                  className={`thq-img-ratio-native-image portfolio-showcase-feature${index + 1}-image`}
-                  onClick={() => openLightbox(index)}
-                />
-                <div className={`portfolio-showcase-content${index + 1} thq-flex-column`}>
-                  <h3 className="thq-heading-3">{project.p_title}</h3>
-                  <span className="thq-body-small">{project.p_description}</span>
+              <a href={`/projects/${project.p_id}`} key={index}>
+                <div key={index} className={`portfolio-showcase-feature${index + 1} thq-flex-column`}>
+                  <img
+                    alt={project.p_title}
+                    src={project.p_images[0]}
+                    className={`thq-img-ratio-native-image portfolio-showcase-feature${index + 1}-image`}
+                    onClick={() => openLightbox(index)}
+                  />
+                  <div className={`portfolio-showcase-content${index + 1} thq-flex-column`}>
+                    <h3 className="thq-heading-3">{project.p_title}</h3>
+                    <span className="thq-body-small">{project.p_description}</span>
+                  </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
