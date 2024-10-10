@@ -10,18 +10,26 @@ import {
   FacebookShareButton, TwitterShareButton, LinkedinShareButton, 
   FacebookIcon, TwitterIcon, LinkedinIcon
 } from 'react-share';
+import { generateOGImage } from '../utils/generateOGimage';
 
 const ProjectId = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [ogImageUrl, setOgImageUrl] = useState('');
 
   useEffect(() => {
     const fetchProject = async () => {
       try {
         const response = await axios.get(`/api/projects/get/${id}`);
         setProject(response.data);
+        
+        // Generate OG image
+        if (response.data.p_images && response.data.p_images.length > 0) {
+          const ogImage = await generateOGImage(response.data.p_title, response.data.p_images[0]);
+          setOgImageUrl(ogImage);
+        }
       } catch (error) {
         console.error('Error fetching project:', error);
       }
@@ -44,7 +52,9 @@ const ProjectId = () => {
         <meta name="description" content={project.p_description} />
         <meta property="og:title" content={project.p_title} />
         <meta property="og:description" content={project.p_description} />
-        <meta property="og:image" content={project.p_images[0]} />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:type" content="website" />
       </Helmet>
 
