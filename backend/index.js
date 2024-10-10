@@ -22,6 +22,7 @@ const { GenerateImage } = require('./opengraph');
 const { UTApi, UTFile } = require("uploadthing/server");
 const { fromBuffer } = require('pdf2pic');
 const cors = require('cors');
+const sharp = require('sharp');
 
 
 app.use(express.json());
@@ -420,12 +421,12 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
     console.log('width', width);
     console.log('height', height);
     const options = {
-        density: 3300,      
-        savePath: "./tmp-images",
-        width: width * 3,
-        height: height * 3,
-        saveFilename: req.file.originalname
-      };
+      density: 150,  // Reduced from 330 to 150 for smaller file size
+      savePath: "./tmp-images",
+      width: Math.round(width * 1.5),  // Reduced from 3x to 1.5x
+      height: Math.round(height * 1.5),  // Reduced from 3x to 1.5x
+      saveFilename: req.file.originalname
+    };
     const convert = fromBuffer(pdfBuffer, options);
     const result = await convert.bulk(-1);
 
@@ -434,10 +435,16 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
       const image = result[i];
       const imagePath = path.join(tmpDir, image.name);
       
-      // Create a temporary URL for the image
-      const tempUrl = `https://itsmejessicalee.com/api/tmp-images/${image.name}`;
+      // Resize and compress the image using sharp
+      await sharp(imagePath)
+        .resize(1200, 1200, { fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 80 })
+        .toFile(path.join(tmpDir, `compressed_${image.name}`));
       
-      // Upload the image using UTApi
+      // Create a temporary URL for the compressed image
+      const tempUrl = `https://itsmejessicalee.com/api/tmp-images/compressed_${image.name}`;
+      
+      // Upload the compressed image using UTApi
       const uploadedFile = await utapi.uploadFilesFromUrl(tempUrl);
       console.log("Uploaded file: ", uploadedFile);
       if (uploadedFile.data) {
@@ -446,8 +453,9 @@ app.post('/api/convert-pdf', upload.single('pdf'), async (req, res) => {
         console.error(`Error uploading file: ${uploadedFile.error.message}`);
       }
       
-      // Delete the temporary image file
+      // Delete both the original and compressed temporary image files
       fs.unlinkSync(imagePath);
+      fs.unlinkSync(path.join(tmpDir, `compressed_${image.name}`));
     }
 
     // Remove the temporary directory
