@@ -10,7 +10,6 @@ import {
   FacebookShareButton, TwitterShareButton, LinkedinShareButton, 
   FacebookIcon, TwitterIcon, LinkedinIcon
 } from 'react-share';
-import { generateOGImage } from '../utils/generateOGimage';
 
 const ProjectId = () => {
   const { id } = useParams();
@@ -18,6 +17,7 @@ const ProjectId = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
   const [ogImageUrl, setOgImageUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -36,6 +36,7 @@ const ProjectId = () => {
         const ogImageUrl = `${window.location.origin}/api/tmp-images/${ogImageResponse.data.split('/').pop()}`; // Construct the URL
         console.log("OG Image URL: ", ogImageUrl);
         setOgImageUrl(ogImageUrl);
+        setIsLoading(false); // Set loading to false after data is ready
       } catch (error) {
         console.error('Error fetching project or generating OG image:', error);
       }
@@ -51,7 +52,7 @@ const ProjectId = () => {
     };
   }, [id]);
 
-  if (!project) {
+  if (isLoading) { // Check loading state
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
