@@ -520,7 +520,7 @@ app.post('/api/opengraph/generate', async (req, res) => {
         
         const imageBuffer = await GenerateImage(params);
         const og_uuid = uuidv4();
-        const imagePathToSave = path.join(__dirname, 'public', 'images', og_uuid + ".png"); // Specify the path where you want to save the image
+        const imagePathToSave = path.join(__dirname, 'public', og_uuid + ".png"); // Specify the path where you want to save the image
         fs.writeFileSync(imagePathToSave, imageBuffer); // Save the image buffer to the specified path
 
         // Send the image buffer as the response
