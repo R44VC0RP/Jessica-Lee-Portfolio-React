@@ -35,6 +35,7 @@ const ProjectId = () => {
         });
         
         const ogImageUrl = URL.createObjectURL(ogImageResponse.data);
+        console.log("OG Image URL: ", ogImageUrl);
         setOgImageUrl(ogImageUrl);
       } catch (error) {
         console.error('Error fetching project or generating OG image:', error);
