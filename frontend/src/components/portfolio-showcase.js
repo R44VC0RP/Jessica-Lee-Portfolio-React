@@ -54,7 +54,7 @@ const PortfolioShowcase = () => {
         <div className="portfolio-showcase-content">
           <div className="portfolio-showcase-row thq-flex-row">
             {projects.map((project, index) => (
-                <div key={index} className={`portfolio-showcase-feature${index + 1} thq-flex-column`} onClick={() => handleProjectClick(project.p_id)}>
+                                <div key={index} className={`portfolio-showcase-feature${index + 1} thq-flex-column cursor-pointer`} onClick={() => handleProjectClick(project.p_id)} onMouseEnter={() => handleProjectHover(project.p_id)} onMouseLeave={() => handleProjectHover(null)}>
                   <img
                     alt={project.p_title}
                     src={project.p_images[0]}
