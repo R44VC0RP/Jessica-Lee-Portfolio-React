@@ -15,8 +15,8 @@ async function GenerateImage(params) {
   }
 
   // Load fonts
-  const interSemiBoldPath = path.join(__dirname, '../fonts/Inter-SemiBold.ttf');
-  const interLightPath = path.join(__dirname, '../fonts/Inter-Light.ttf');
+  const interSemiBoldPath = path.join(__dirname, 'fonts', 'Inter-SemiBold.ttf');
+  const interLightPath = path.join(__dirname, 'fonts', 'Inter-Light.ttf');
 
   const logoPath = "https://itsmejessicalee.com/jhlogo.png"
 

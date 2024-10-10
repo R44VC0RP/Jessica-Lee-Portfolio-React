@@ -531,7 +531,7 @@ app.post('/api/opengraph/generate', async (req, res) => {
         fs.writeFileSync(imagePathToSave, imageBuffer); // Save the image buffer to the specified path
 
         // Send the image buffer as the response
-        res.send(imagePathToSave);
+        res.send("/api/tmp-images/" + og_uuid + ".png");
     } catch (error) {
         console.error('Error generating OpenGraph image:', error);
         res.status(500).json({ error: 'Error generating OpenGraph image: ' + error.message });
