@@ -258,11 +258,11 @@ const Projects = () => {
             ))}
 
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-500 overflow-y-auto">
+                <div className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto p-4">
                     <div className="fixed inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 max-w-4xl z-10">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto">
                         <h2 className="text-xl mb-4">Add New Project</h2>
-                        <div className="flex flex-col md:flex-row gap-4">
+                        <div className="flex flex-col lg:flex-row gap-4">
                             <div className="flex-1">
                                 <input
                                     type="text"
@@ -384,11 +384,11 @@ const Projects = () => {
             )}
 
             {isEditModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-500 overflow-y-auto">
+                <div className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto p-4">
                     <div className="fixed inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 max-w-4xl z-10">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl z-10 max-h-[90vh] overflow-y-auto">
                         <h2 className="text-xl mb-4">Edit Project</h2>
-                        <div className="flex flex-col md:flex-row gap-4">
+                        <div className="flex flex-col lg:flex-row gap-4">
                             <div className="flex-1">
                                 <input
                                     type="text"
