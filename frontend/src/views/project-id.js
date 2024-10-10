@@ -18,9 +18,10 @@ const ProjectId = () => {
   const [photoIndex, setPhotoIndex] = useState(0);
   const [ogImageUrl, setOgImageUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true); // Add loading state
+  
 
   useEffect(() => {
-    setOgImageUrl(`${window.location.origin}/api/opengraph/image/${id}`);
+    
     const fetchProject = async () => {
       try {
         const response = await axios.get(`/api/projects/get/${id}`);
@@ -69,6 +70,7 @@ const ProjectId = () => {
 
   const shareUrl = window.location.href;
   const title = `Check out this project: ${project.p_title}`;
+  setOgImageUrl(`${window.location.origin}/api/opengraph/image/${id}`);
 
   return (
     <div className="flex flex-col min-h-screen">
