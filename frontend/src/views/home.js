@@ -26,7 +26,8 @@ const Home = (props) => {
           property="og:image"
           content="https://utfs.io/f/Ikk25IOqr5UOAwJk7USbO8HN2EYRu3wtifpqJTyUMmgsd0zF"
         />
-        <meta name="robots" content="noindex" />
+        <meta property='url' content='https://itsmejessicalee.com' />
+
       </Helmet>
       <MainNavbar></MainNavbar>
       <div className="home-hero-section">

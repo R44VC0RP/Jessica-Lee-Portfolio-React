@@ -81,6 +81,8 @@ const Portfolio = (props) => {
           property="og:image"
           content="https://utfs.io/f/Ikk25IOqr5UOAwJk7USbO8HN2EYRu3wtifpqJTyUMmgsd0zF"
         />
+        <meta property='url' content='https://itsmejessicalee.com' />
+        
       </Helmet>
       <MainNavbar></MainNavbar>
       <PortfolioShowcase projects={showcaseProjects}></PortfolioShowcase>
