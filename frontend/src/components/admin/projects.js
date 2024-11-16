@@ -9,6 +9,8 @@ import { uploadFiles } from './uploadthing'; // Adjust the import path as needed
 const UploadDropzone = generateUploadDropzone();
 const UploadButton = generateUploadButton();
 
+// FEAT ADD rearanging the project images so you can drag and drop them to reorder them
+
 const Projects = () => {
     const [projectCount, setProjectCount] = useState(0);
     const [projects, setProjects] = useState([]);
