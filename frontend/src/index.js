@@ -28,6 +28,7 @@ const App = () => {
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/portfolio" component={Portfolio} />
+        <Route path="/portfolio-test" component={PortfolioTest} />
         <Route path="/contact" component={Contact} />
         <Route path="/logout" component={Logout} />
         <Route path="/projects/:id" component={ProjectId} />
