@@ -15,6 +15,7 @@ import NotFound from './views/not-found'
 import ProtectedRoute from './components/protectedroute'
 import Contact from './views/contact'
 import Logout from './components/logout'
+import PortfolioTest from './views/portfolio-test'
 
 const App = () => {
   return (
